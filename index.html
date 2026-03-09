@@ -1002,16 +1002,9 @@
 <div id="screen-upload">
   <div class="upload-container">
     <h1 class="upload-title">Casting Review</h1>
-    <p class="upload-subtitle">Drop your casting CSV to start reviewing candidates.</p>
+    <p class="upload-subtitle">Open Casting — 2,200 candidates</p>
 
-    <div class="drop-zone" id="dropZone">
-      <div class="drop-zone__icon">+</div>
-      <div class="drop-zone__text"><strong>Drop CSV here</strong> or click to browse</div>
-      <input type="file" id="fileInput" accept=".csv">
-    </div>
-
-    <div class="setup-panel" id="setupPanel">
-      <div class="setup-summary" id="setupSummary"></div>
+    <div class="setup-summary" id="setupSummary">Loading candidates...</div>
 
       <div class="form-group">
         <label class="form-label">Your Name</label>
@@ -1035,7 +1028,6 @@
       </div>
 
       <button class="btn-start" id="btnStart" disabled>Start Reviewing</button>
-    </div>
   </div>
 </div>
 
@@ -1881,22 +1873,8 @@ function init() {
   // Auto-advance toggle
   document.getElementById('autoAdvance').checked = App.autoAdvance;
 
-  // Drop zone
-  const dropZone = document.getElementById('dropZone');
-  const fileInput = document.getElementById('fileInput');
-
-  dropZone.addEventListener('click', () => fileInput.click());
-  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-  dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZone.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
-  });
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files[0]) handleFile(fileInput.files[0]);
-  });
+  // Auto-load embedded candidate data
+  loadCandidateData();
 
   // Chunk options
   document.getElementById('chunkOptions').addEventListener('click', (e) => {
@@ -2026,20 +2004,11 @@ function init() {
   document.addEventListener('keydown', handleKeyboard);
 }
 
-function handleFile(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const text = e.target.result;
-    const rows = parseCSV(text);
-
-    if (rows.length < 2) {
-      alert('CSV appears empty or malformed.');
-      return;
-    }
-
-    const headers = rows[0];
-    const dataRows = rows.slice(1);
-    App.candidates = buildCandidates(dataRows, headers);
+async function loadCandidateData() {
+  try {
+    const resp = await fetch('candidates.json');
+    if (!resp.ok) throw new Error('Failed to load candidates.json');
+    App.candidates = await resp.json();
 
     // Count existing reviews
     let existingCount = 0;
@@ -2048,8 +2017,8 @@ function handleFile(file) {
     }
 
     const summary = document.getElementById('setupSummary');
-    summary.innerHTML = `<strong>${App.candidates.length}</strong> candidates loaded from <strong>${file.name}</strong>` +
-      (existingCount ? ` · <strong>${existingCount}</strong> already have ratings from a previous session` : '');
+    summary.innerHTML = `<strong>${App.candidates.length}</strong> candidates` +
+      (existingCount ? ` · <strong>${existingCount}</strong> already rated` : '');
 
     // Update chunk labels
     const total = App.candidates.length;
@@ -2061,16 +2030,15 @@ function handleFile(file) {
     btns[4].textContent = `${q * 3 + 1}–${total}`;
     document.getElementById('chunkTo').placeholder = String(total);
 
-    document.getElementById('setupPanel').classList.add('visible');
-
     // Enable start if name already filled
     if (document.getElementById('reviewerName').value.trim()) {
       document.getElementById('btnStart').disabled = false;
     }
 
     populateFilters();
-  };
-  reader.readAsText(file, 'utf-8');
+  } catch (err) {
+    document.getElementById('setupSummary').innerHTML = 'Error loading candidate data: ' + err.message;
+  }
 }
 
 function startReview() {
