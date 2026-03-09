@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JRB Casting Review</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f8f7;
+      --bg-card: #ffffff;
+      --bg-hover: #f3f3f2;
+      --text: #1a1a1a;
+      --text-muted: #888;
+      --border: #e5e5e3;
+      --green: #2d8a4e;
+      --green-bg: #e6f4ea;
+      --amber: #c47a10;
+      --amber-bg: #fef3d0;
+      --red: #c4302b;
+      --red-bg: #fce8e6;
+      --blue: #2563eb;
+      --radius: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Upload Screen ── */
+    #screen-upload {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .upload-container {
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .upload-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      letter-spacing: -.02em;
+    }
+
+    .upload-subtitle {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      background: var(--bg-card);
+    }
+
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--text);
+      background: var(--bg-hover);
+    }
+
+    .drop-zone__icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      opacity: .4;
+    }
+
+    .drop-zone__text {
+      font-size: 15px;
+      color: var(--text-muted);
+    }
+
+    .drop-zone__text strong {
+      color: var(--text);
+    }
+
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    /* ── Setup Panel (after CSV loaded) ── */
+    .setup-panel {
+      margin-top: 24px;
+      display: none;
+    }
+
+    .setup-panel.visible {
+      display: block;
+    }
+
+    .setup-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .setup-summary strong {
+      color: var(--text);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--text-muted);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-family: inherit;
+      background: var(--bg-card);
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .form-input:focus {
+      border-color: var(--text);
+    }
+
+    .chunk-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chunk-btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+      transition: all .15s;
+    }
+
+    .chunk-btn:hover {
+      border-color: var(--text);
+    }
+
+    .chunk-btn.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    .custom-range {
+      display: none;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .custom-range.visible {
+      display: flex;
+    }
+
+    .custom-range input {
+      width: 80px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: inherit;
+      text-align: center;
+    }
+
+    .btn-start {
+      width: 100%;
+      padding: 14px;
+      background: var(--text);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: opacity .15s;
+    }
+
+    .btn-start:hover {
+      opacity: .85;
+    }
+
+    .btn-start:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    /* ── Review Screen ── */
+    #screen-review {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .review-header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .review-header__title {
+      font-weight: 700;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .review-header__progress {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      max-width: 300px;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar__fill {
+      height: 100%;
+      background: var(--text);
+      transition: width .3s;
+      border-radius: 3px;
+    }
+
+    .progress-stats {
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .progress-stats span {
+      margin: 0 4px;
+    }
+
+    .stat-yes { color: var(--green); font-weight: 600; }
+    .stat-maybe { color: var(--amber); font-weight: 600; }
+    .stat-no { color: var(--red); font-weight: 600; }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-icon {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn-icon:hover {
+      border-color: var(--text);
+    }
+
+    .btn-icon.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: none;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .filter-bar.visible {
+      display: flex;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .filter-group label {
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      font-size: 11px;
+    }
+
+    .filter-group select, .filter-group input {
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+    }
+
+    .filter-group input[type="number"] {
+      width: 60px;
+      text-align: center;
+    }
+
+    .filter-group input[type="text"] {
+      width: 160px;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 4px;
+    }
+
+    .filter-pill {
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-card);
+      cursor: pointer;
+      font-size: 12px;
+      font-family: inherit;
+      transition: all .15s;
+    }
+
+    .filter-pill:hover {
+      border-color: var(--text);
+    }
+
+    .filter-pill.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    /* Card layout */
+    .review-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .card-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: background .15s;
+      user-select: none;
+    }
+
+    .card-nav:hover {
+      background: var(--bg-hover);
+    }
+
+    .card-nav svg {
+      width: 20px;
+      height: 20px;
+      opacity: .4;
+    }
+
+    .card-nav:hover svg {
+      opacity: .8;
+    }
+
+    .card-content {
+      flex: 1;
+      display: flex;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .card-media {
+      flex: 0 0 55%;
+      display: flex;
+      flex-direction: column;
+      background: #f0f0ee;
+      overflow: hidden;
+    }
+
+    .card-photo {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 0;
+      position: relative;
+    }
+
+    .card-photo img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .card-photo__placeholder {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .card-video {
+      flex-shrink: 0;
+      height: 140px;
+      background: #e8e8e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .card-video img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .card-video__placeholder {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .card-info {
+      flex: 0 0 45%;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--border);
+      background: var(--bg-card);
+      overflow-y: auto;
+    }
+
+    .card-info__top {
+      padding: 24px;
+      flex: 1;
+    }
+
+    .candidate-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      margin-bottom: 2px;
+    }
+
+    .candidate-meta {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .candidate-ig {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .candidate-ig a {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .candidate-ig a:hover {
+      text-decoration: underline;
+    }
+
+    .info-section {
+      margin-bottom: 16px;
+    }
+
+    .info-section__label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .info-section__value {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .skin-tone-tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .needs-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .need-tag {
+      padding: 2px 8px;
+      background: var(--bg);
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* Notes */
+    .notes-section {
+      padding: 0 24px 16px;
+    }
+
+    .notes-section textarea {
+      width: 100%;
+      min-height: 60px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .notes-section textarea:focus {
+      border-color: var(--text);
+    }
+
+    .notes-section textarea::placeholder {
+      color: #bbb;
+    }
+
+    /* Rating buttons */
+    .card-rating {
+      display: flex;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .rating-btn {
+      flex: 1;
+      padding: 16px;
+      border: none;
+      background: var(--bg-card);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all .12s;
+      position: relative;
+    }
+
+    .rating-btn + .rating-btn {
+      border-left: 1px solid var(--border);
+    }
+
+    .rating-btn:hover {
+      background: var(--bg-hover);
+    }
+
+    .rating-btn .key-hint {
+      font-size: 11px;
+      padding: 1px 5px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .rating-btn--yes.active {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .rating-btn--maybe.active {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .rating-btn--no.active {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    /* Counter on card nav */
+    .card-counter {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* ── Gallery Screen ── */
+    #screen-gallery {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .gallery-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-cell {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .15s, border-color .15s;
+      position: relative;
+    }
+
+    .gallery-cell:hover {
+      border-color: #ccc;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .gallery-cell__photo {
+      aspect-ratio: 3/4;
+      background: #f0f0ee;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-cell__photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-cell__info {
+      padding: 8px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gallery-cell__name {
+      font-size: 13px;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .gallery-cell__age {
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .gallery-cell__badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .gallery-cell__badge--yes {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .gallery-cell__badge--maybe {
+      background: var(--amber-bg);
+      color: var(--amber);
+    }
+
+    .gallery-cell__badge--no {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    /* Hover actions on gallery */
+    .gallery-cell__actions {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px;
+      background: linear-gradient(transparent, rgba(0,0,0,.5));
+      opacity: 0;
+      transition: opacity .15s;
+    }
+
+    .gallery-cell:hover .gallery-cell__actions {
+      opacity: 1;
+    }
+
+    .gallery-cell__actions button {
+      padding: 5px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform .1s;
+    }
+
+    .gallery-cell__actions button:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-cell__actions .g-yes { background: var(--green-bg); color: var(--green); }
+    .gallery-cell__actions .g-maybe { background: var(--amber-bg); color: var(--amber); }
+    .gallery-cell__actions .g-no { background: var(--red-bg); color: var(--red); }
+
+    /* ── Export Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.4);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.visible {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 8px 30px rgba(0,0,0,.15);
+    }
+
+    .modal h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .modal .form-group {
+      margin-bottom: 12px;
+    }
+
+    .modal .export-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .modal .export-btns button {
+      flex: 1;
+      padding: 10px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      transition: all .15s;
+    }
+
+    .modal .export-btns button:hover {
+      border-color: var(--text);
+    }
+
+    .modal .export-btns .btn-primary {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    .modal .export-btns .btn-primary:hover {
+      opacity: .85;
+    }
+
+    /* ── Keyboard shortcut overlay ── */
+    .shortcuts-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shortcuts-overlay.visible {
+      display: flex;
+    }
+
+    .shortcuts-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 24px 32px;
+      max-width: 380px;
+      width: 90%;
+    }
+
+    .shortcuts-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .shortcuts-card table {
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .shortcuts-card td {
+      padding: 4px 0;
+    }
+
+    .shortcuts-card td:first-child {
+      font-weight: 600;
+      width: 80px;
+    }
+
+    .shortcuts-card td:first-child kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    /* ── Auto-advance toggle ── */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 36px;
+      height: 20px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 2px;
+      top: 2px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .2s;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: var(--text);
+    }
+
+    .toggle input:checked + .toggle-slider::before {
+      transform: translateX(16px);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .review-header {
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .progress-bar { max-width: none; }
+
+      .card-content {
+        flex-direction: column;
+      }
+
+      .card-media {
+        flex: 0 0 auto;
+        max-height: 45vh;
+      }
+
+      .card-info {
+        flex: 1;
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+
+      .card-nav { display: none; }
+
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 8px;
+      }
+
+      .header-actions .btn-icon span.desktop-only {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============ UPLOAD SCREEN ============ -->
+<div id="screen-upload">
+  <div class="upload-container">
+    <h1 class="upload-title">Casting Review</h1>
+    <p class="upload-subtitle">Drop your casting CSV to start reviewing candidates.</p>
+
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-zone__icon">+</div>
+      <div class="drop-zone__text"><strong>Drop CSV here</strong> or click to browse</div>
+      <input type="file" id="fileInput" accept=".csv">
+    </div>
+
+    <div class="setup-panel" id="setupPanel">
+      <div class="setup-summary" id="setupSummary"></div>
+
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" id="reviewerName" placeholder="e.g. Sarah">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Review Range</label>
+        <div class="chunk-options" id="chunkOptions">
+          <button class="chunk-btn active" data-chunk="all">All</button>
+          <button class="chunk-btn" data-chunk="q1">Q1</button>
+          <button class="chunk-btn" data-chunk="q2">Q2</button>
+          <button class="chunk-btn" data-chunk="q3">Q3</button>
+          <button class="chunk-btn" data-chunk="q4">Q4</button>
+          <button class="chunk-btn" data-chunk="custom">Custom</button>
+        </div>
+        <div class="custom-range" id="customRange">
+          <input type="number" id="chunkFrom" min="1" placeholder="From"> <span>to</span>
+          <input type="number" id="chunkTo" placeholder="To">
+        </div>
+      </div>
+
+      <button class="btn-start" id="btnStart" disabled>Start Reviewing</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ REVIEW SCREEN ============ -->
+<div id="screen-review">
+  <div class="review-header">
+    <div class="review-header__title">Casting Review</div>
+    <div class="review-header__progress">
+      <div class="progress-bar"><div class="progress-bar__fill" id="progressFill"></div></div>
+      <div class="progress-stats" id="progressStats"></div>
+    </div>
+    <div class="header-actions">
+      <div class="toggle-wrap">
+        <label class="toggle">
+          <input type="checkbox" id="autoAdvance" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <span>Auto</span>
+      </div>
+      <button class="btn-icon" id="btnFilter">Filter</button>
+      <button class="btn-icon" id="btnGallery">Grid</button>
+      <button class="btn-icon" id="btnExport">Export</button>
+      <button class="btn-icon" id="btnShortcuts">?</button>
+    </div>
+  </div>
+
+  <div class="filter-bar" id="filterBar">
+    <div class="filter-group">
+      <label>Search</label>
+      <input type="text" id="filterSearch" placeholder="Name or IG...">
+    </div>
+    <div class="filter-group">
+      <label>Age</label>
+      <input type="number" id="filterAgeMin" placeholder="Min" min="0">
+      <span>–</span>
+      <input type="number" id="filterAgeMax" placeholder="Max" min="0">
+    </div>
+    <div class="filter-group">
+      <label>Ethnicity</label>
+      <select id="filterEthnicity"><option value="">All</option></select>
+    </div>
+    <div class="filter-group">
+      <label>Skin Tone</label>
+      <select id="filterSkinTone"><option value="">All</option></select>
+    </div>
+    <div class="filter-group">
+      <label>Status</label>
+      <div class="filter-pills" id="filterStatus">
+        <button class="filter-pill active" data-status="all">All</button>
+        <button class="filter-pill" data-status="unreviewed">Unreviewed</button>
+        <button class="filter-pill" data-status="yes">Yes</button>
+        <button class="filter-pill" data-status="maybe">Maybe</button>
+        <button class="filter-pill" data-status="no">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="review-body">
+    <div class="card-nav" id="navPrev">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+
+    <div class="card-content">
+      <div class="card-media">
+        <div class="card-photo" id="cardPhoto">
+          <span class="card-photo__placeholder">No photo</span>
+        </div>
+        <div class="card-video" id="cardVideo">
+          <span class="card-video__placeholder">No video</span>
+        </div>
+      </div>
+
+      <div class="card-info">
+        <div class="card-info__top">
+          <div class="candidate-name" id="candidateName">–</div>
+          <div class="candidate-meta" id="candidateMeta">–</div>
+          <div class="candidate-ig" id="candidateIg"></div>
+
+          <div class="info-section">
+            <div class="info-section__label">Skin Tone</div>
+            <div class="info-section__value" id="candidateTone">–</div>
+          </div>
+
+          <div class="info-section">
+            <div class="info-section__label">Skin Needs</div>
+            <div class="info-section__value needs-tags" id="candidateNeeds"></div>
+          </div>
+
+          <div class="info-section">
+            <div class="info-section__label">Products</div>
+            <div class="info-section__value" id="candidateProducts">–</div>
+          </div>
+        </div>
+
+        <div class="notes-section">
+          <div class="info-section__label">Notes</div>
+          <textarea id="candidateNotes" placeholder="Add notes about this candidate... (press N to focus)"></textarea>
+        </div>
+
+        <div class="card-rating">
+          <button class="rating-btn rating-btn--yes" data-rating="yes">
+            <span class="key-hint">1</span> Yes
+          </button>
+          <button class="rating-btn rating-btn--maybe" data-rating="maybe">
+            <span class="key-hint">2</span> Maybe
+          </button>
+          <button class="rating-btn rating-btn--no" data-rating="no">
+            <span class="key-hint">3</span> No
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-nav" id="navNext">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ============ GALLERY SCREEN ============ -->
+<div id="screen-gallery">
+  <div class="review-header">
+    <div class="review-header__title">Casting Review</div>
+    <div class="review-header__progress">
+      <div class="progress-bar"><div class="progress-bar__fill" id="galleryProgressFill"></div></div>
+      <div class="progress-stats" id="galleryProgressStats"></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btnFilter2">Filter</button>
+      <button class="btn-icon active" id="btnCardView">Cards</button>
+      <button class="btn-icon" id="btnExport2">Export</button>
+    </div>
+  </div>
+
+  <div class="filter-bar" id="filterBar2">
+    <div class="filter-group">
+      <label>Search</label>
+      <input type="text" id="filterSearch2" placeholder="Name or IG...">
+    </div>
+    <div class="filter-group">
+      <label>Status</label>
+      <div class="filter-pills" id="filterStatus2">
+        <button class="filter-pill active" data-status="all">All</button>
+        <button class="filter-pill" data-status="unreviewed">Unreviewed</button>
+        <button class="filter-pill" data-status="yes">Yes</button>
+        <button class="filter-pill" data-status="maybe">Maybe</button>
+        <button class="filter-pill" data-status="no">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-body">
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</div>
+
+<!-- ============ EXPORT MODAL ============ -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal">
+    <h3>Export Reviews</h3>
+    <div class="form-group">
+      <label class="form-label">Include</label>
+      <select class="form-input" id="exportFilter">
+        <option value="rated">All rated candidates</option>
+        <option value="yes">Yes only</option>
+        <option value="maybe">Maybe only</option>
+        <option value="yes+maybe">Yes + Maybe</option>
+        <option value="no">No only</option>
+        <option value="all">All candidates (incl. unreviewed)</option>
+      </select>
+    </div>
+    <div class="export-btns">
+      <button id="exportCancel">Cancel</button>
+      <button class="btn-primary" id="exportConfirm">Download CSV</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SHORTCUTS OVERLAY ============ -->
+<div class="shortcuts-overlay" id="shortcutsOverlay">
+  <div class="shortcuts-card">
+    <h3>Keyboard Shortcuts</h3>
+    <table>
+      <tr><td><kbd>1</kbd></td><td>Rate Yes</td></tr>
+      <tr><td><kbd>2</kbd></td><td>Rate Maybe</td></tr>
+      <tr><td><kbd>3</kbd></td><td>Rate No</td></tr>
+      <tr><td><kbd>0</kbd></td><td>Clear rating</td></tr>
+      <tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>Navigate</td></tr>
+      <tr><td><kbd>]</kbd></td><td>Next unreviewed</td></tr>
+      <tr><td><kbd>N</kbd></td><td>Focus notes</td></tr>
+      <tr><td><kbd>G</kbd></td><td>Toggle gallery</td></tr>
+      <tr><td><kbd>F</kbd></td><td>Toggle filters</td></tr>
+      <tr><td><kbd>E</kbd></td><td>Export</td></tr>
+      <tr><td><kbd>?</kbd></td><td>This help</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════
+const App = {
+  candidates: [],
+  filtered: [],
+  reviews: {},
+  currentIndex: 0,
+  currentScreen: 'upload',
+  reviewer: '',
+  chunkStart: 0,
+  chunkEnd: Infinity,
+  autoAdvance: true,
+  filters: {
+    search: '',
+    ageMin: 0,
+    ageMax: 999,
+    ethnicity: '',
+    skinTone: '',
+    status: 'all'
+  },
+  columnMap: {},
+  galleryObserver: null,
+};
+
+const STORAGE_KEY = 'jrb-casting-v1';
+
+// ═══════════════════════════════════════════
+// CSV Parser
+// ═══════════════════════════════════════════
+function parseCSV(text) {
+  // Strip BOM
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+
+  const rows = [];
+  let current = '';
+  let inQuotes = false;
+  let row = [];
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const next = text[i + 1];
+
+    if (inQuotes) {
+      if (ch === '"' && next === '"') {
+        current += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        row.push(current);
+        current = '';
+      } else if (ch === '\n' || (ch === '\r' && next === '\n')) {
+        row.push(current);
+        if (row.length > 1 || row[0].trim() !== '') rows.push(row);
+        row = [];
+        current = '';
+        if (ch === '\r') i++;
+      } else {
+        current += ch;
+      }
+    }
+  }
+  if (current || row.length) {
+    row.push(current);
+    if (row.length > 1 || row[0].trim() !== '') rows.push(row);
+  }
+  return rows;
+}
+
+// ═══════════════════════════════════════════
+// Column Detection
+// ═══════════════════════════════════════════
+const COLUMN_HINTS = {
+  name: ['full name', 'name'],
+  email: ['email'],
+  age: ['age', 'how old'],
+  ethnicity: ['ethnicity', 'ethnic', 'race'],
+  instagram: ['instagram', 'handle', 'ig'],
+  skinTone: ['skin tone', 'tone'],
+  skinNeeds: ['skin need', 'skin concerns', 'need'],
+  products: ['product', 'complexion', 'go-to'],
+  photoUrl: ['photo', 'picture', 'image'],
+  videoUrl: ['video', 'introducing'],
+  submittedAt: ['submitted', 'timestamp', 'date'],
+};
+
+function autoMapColumns(headers) {
+  const map = {};
+  const lower = headers.map(h => h.toLowerCase());
+
+  for (const [field, hints] of Object.entries(COLUMN_HINTS)) {
+    for (const hint of hints) {
+      const idx = lower.findIndex(h => h.includes(hint));
+      if (idx !== -1 && !Object.values(map).includes(idx)) {
+        map[field] = idx;
+        break;
+      }
+    }
+  }
+  return map;
+}
+
+function buildCandidates(rows, headers) {
+  const map = autoMapColumns(headers);
+  App.columnMap = map;
+
+  return rows.map((row, i) => ({
+    id: i,
+    name: (row[map.name] || '').trim(),
+    email: (row[map.email] || '').trim().toLowerCase(),
+    age: parseInt(row[map.age]) || 0,
+    ethnicity: (row[map.ethnicity] || '').trim(),
+    instagram: (row[map.instagram] || '').trim(),
+    skinTone: (row[map.skinTone] || '').trim(),
+    skinNeeds: (row[map.skinNeeds] || '').split(',').map(s => s.trim()).filter(Boolean),
+    products: (row[map.products] || '').trim(),
+    photoUrl: (row[map.photoUrl] || '').trim(),
+    videoUrl: (row[map.videoUrl] || '').trim(),
+    submittedAt: (row[map.submittedAt] || '').trim(),
+  })).filter(c => c.name && c.email);
+}
+
+// ═══════════════════════════════════════════
+// LocalStorage
+// ═══════════════════════════════════════════
+function saveState() {
+  const data = {
+    reviews: App.reviews,
+    settings: {
+      reviewer: App.reviewer,
+      chunkStart: App.chunkStart,
+      chunkEnd: App.chunkEnd,
+      autoAdvance: App.autoAdvance,
+      lastIndex: App.currentIndex,
+      filters: App.filters,
+    }
+  };
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn('Failed to save to localStorage:', e);
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.reviews) App.reviews = data.reviews;
+    if (data.settings) {
+      App.reviewer = data.settings.reviewer || '';
+      App.autoAdvance = data.settings.autoAdvance !== false;
+      App.currentIndex = data.settings.lastIndex || 0;
+    }
+  } catch (e) {
+    console.warn('Failed to load from localStorage:', e);
+  }
+}
+
+// ═══════════════════════════════════════════
+// Filtering
+// ═══════════════════════════════════════════
+function applyFilters() {
+  const { search, ageMin, ageMax, ethnicity, skinTone, status } = App.filters;
+  const searchLower = search.toLowerCase();
+
+  let pool = App.candidates.slice(App.chunkStart, App.chunkEnd);
+
+  App.filtered = pool.filter(c => {
+    if (searchLower && !c.name.toLowerCase().includes(searchLower) &&
+        !c.instagram.toLowerCase().includes(searchLower)) return false;
+    if (ageMin && c.age < ageMin) return false;
+    if (ageMax && c.age > ageMax) return false;
+    if (ethnicity && !c.ethnicity.toLowerCase().includes(ethnicity.toLowerCase())) return false;
+    if (skinTone && !c.skinTone.toLowerCase().includes(skinTone.toLowerCase())) return false;
+
+    const review = App.reviews[c.email];
+    if (status === 'unreviewed' && review?.rating) return false;
+    if (status === 'yes' && review?.rating !== 'yes') return false;
+    if (status === 'maybe' && review?.rating !== 'maybe') return false;
+    if (status === 'no' && review?.rating !== 'no') return false;
+
+    return true;
+  });
+}
+
+// ═══════════════════════════════════════════
+// Rendering — Card View
+// ═══════════════════════════════════════════
+function renderCard() {
+  const c = App.filtered[App.currentIndex];
+  if (!c) {
+    document.getElementById('candidateName').textContent = 'No candidates match filters';
+    document.getElementById('candidateMeta').textContent = '';
+    document.getElementById('candidateIg').innerHTML = '';
+    document.getElementById('candidateTone').textContent = '';
+    document.getElementById('candidateNeeds').innerHTML = '';
+    document.getElementById('candidateProducts').textContent = '';
+    document.getElementById('candidateNotes').value = '';
+    document.getElementById('cardPhoto').innerHTML = '<span class="card-photo__placeholder">No candidates</span>';
+    document.getElementById('cardVideo').innerHTML = '';
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active'));
+    return;
+  }
+
+  // Name + meta
+  document.getElementById('candidateName').textContent = c.name;
+  document.getElementById('candidateMeta').textContent = `${c.age} · ${c.ethnicity}`;
+
+  // Instagram
+  const igEl = document.getElementById('candidateIg');
+  const handle = cleanInstagram(c.instagram);
+  if (handle) {
+    igEl.innerHTML = `<a href="https://instagram.com/${handle}" target="_blank" rel="noopener">@${handle}</a>`;
+  } else {
+    igEl.innerHTML = '<span style="color:var(--text-muted);font-size:13px">No Instagram</span>';
+  }
+
+  // Skin tone
+  document.getElementById('candidateTone').innerHTML = `<span class="skin-tone-tag">${c.skinTone || '–'}</span>`;
+
+  // Skin needs
+  const needsEl = document.getElementById('candidateNeeds');
+  needsEl.innerHTML = c.skinNeeds.map(n => `<span class="need-tag">${n}</span>`).join('');
+
+  // Products
+  document.getElementById('candidateProducts').textContent = c.products || '–';
+
+  // Notes
+  const review = App.reviews[c.email] || {};
+  document.getElementById('candidateNotes').value = review.notes || '';
+
+  // Rating buttons
+  document.querySelectorAll('.rating-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.rating === review.rating);
+  });
+
+  // Photo
+  renderPhoto(c.photoUrl);
+
+  // Video
+  renderVideo(c.videoUrl);
+
+  // Preload next photos
+  preloadAhead(3);
+
+  renderProgress();
+}
+
+function renderPhoto(url) {
+  const container = document.getElementById('cardPhoto');
+  if (!url) {
+    container.innerHTML = '<span class="card-photo__placeholder">No photo</span>';
+    return;
+  }
+  const img = new Image();
+  img.onload = () => { container.replaceChildren(img); };
+  img.onerror = () => { container.innerHTML = '<span class="card-photo__placeholder">Photo unavailable</span>'; };
+  img.src = url;
+  // Show loading state
+  container.innerHTML = '<span class="card-photo__placeholder">Loading...</span>';
+}
+
+function renderVideo(url) {
+  const container = document.getElementById('cardVideo');
+  if (!url) {
+    container.innerHTML = '<span class="card-video__placeholder">No video</span>';
+    return;
+  }
+
+  const ext = url.split('.').pop().toLowerCase().split('?')[0];
+  const isLikelyVideo = ['mp4', 'mov', 'webm', 'avi', 'quicktime'].includes(ext);
+
+  if (isLikelyVideo) {
+    const video = document.createElement('video');
+    video.controls = true;
+    video.preload = 'metadata';
+    video.playsInline = true;
+    video.src = url;
+    video.onerror = () => {
+      // Fallback to image
+      const img = new Image();
+      img.src = url;
+      img.onerror = () => {
+        container.innerHTML = '<span class="card-video__placeholder">Video unavailable (.MOV — try Safari)</span>';
+      };
+      img.onload = () => { container.replaceChildren(img); };
+    };
+    container.replaceChildren(video);
+  } else {
+    // Likely an image submitted as video
+    const img = new Image();
+    img.src = url;
+    img.style.maxHeight = '100%';
+    img.style.maxWidth = '100%';
+    img.style.objectFit = 'contain';
+    img.onerror = () => {
+      container.innerHTML = '<span class="card-video__placeholder">Media unavailable</span>';
+    };
+    img.onload = () => { container.replaceChildren(img); };
+    container.innerHTML = '<span class="card-video__placeholder">Loading...</span>';
+  }
+}
+
+function cleanInstagram(raw) {
+  if (!raw) return '';
+  let handle = raw.trim();
+  // Handle full URLs
+  if (handle.includes('instagram.com')) {
+    const match = handle.match(/instagram\.com\/([A-Za-z0-9_.]+)/);
+    if (match) return match[1];
+  }
+  // Strip @ prefix
+  handle = handle.replace(/^@/, '');
+  // Skip if it's "none" or similar
+  if (['none', 'n/a', 'na', 'no'].includes(handle.toLowerCase())) return '';
+  return handle;
+}
+
+function preloadAhead(count) {
+  for (let i = 1; i <= count; i++) {
+    const idx = App.currentIndex + i;
+    if (idx < App.filtered.length && App.filtered[idx].photoUrl) {
+      new Image().src = App.filtered[idx].photoUrl;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════
+// Progress
+// ═══════════════════════════════════════════
+function renderProgress() {
+  const total = App.filtered.length;
+  let reviewed = 0, yes = 0, maybe = 0, no = 0;
+
+  for (const c of App.filtered) {
+    const r = App.reviews[c.email];
+    if (r?.rating) {
+      reviewed++;
+      if (r.rating === 'yes') yes++;
+      else if (r.rating === 'maybe') maybe++;
+      else if (r.rating === 'no') no++;
+    }
+  }
+
+  const pct = total ? (reviewed / total * 100) : 0;
+  const pos = total ? `${App.currentIndex + 1} of ${total}` : '0 of 0';
+
+  // Review screen
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressStats').innerHTML =
+    `${pos} · ${reviewed} reviewed · <span class="stat-yes">${yes} Y</span> · <span class="stat-maybe">${maybe} M</span> · <span class="stat-no">${no} N</span>`;
+
+  // Gallery screen
+  document.getElementById('galleryProgressFill').style.width = pct + '%';
+  document.getElementById('galleryProgressStats').innerHTML =
+    `${reviewed} / ${total} reviewed · <span class="stat-yes">${yes} Y</span> · <span class="stat-maybe">${maybe} M</span> · <span class="stat-no">${no} N</span>`;
+}
+
+// ═══════════════════════════════════════════
+// Actions
+// ═══════════════════════════════════════════
+function rate(rating) {
+  const c = App.filtered[App.currentIndex];
+  if (!c) return;
+
+  const existing = App.reviews[c.email];
+  if (existing && existing.rating === rating) {
+    // Toggle off
+    existing.rating = null;
+  } else {
+    App.reviews[c.email] = {
+      rating,
+      notes: existing?.notes || document.getElementById('candidateNotes').value || '',
+      reviewedAt: new Date().toISOString(),
+      reviewer: App.reviewer,
+    };
+  }
+
+  saveState();
+  renderCard();
+
+  if (App.autoAdvance && App.reviews[c.email]?.rating) {
+    setTimeout(() => navigateToNext(), 250);
+  }
+}
+
+function clearRating() {
+  const c = App.filtered[App.currentIndex];
+  if (!c) return;
+  const existing = App.reviews[c.email];
+  if (existing) existing.rating = null;
+  saveState();
+  renderCard();
+}
+
+function navigate(dir) {
+  const newIdx = App.currentIndex + dir;
+  if (newIdx >= 0 && newIdx < App.filtered.length) {
+    saveNotes();
+    App.currentIndex = newIdx;
+    saveState();
+    renderCard();
+  }
+}
+
+function navigateToNext() {
+  // Go to next unreviewed, or just next
+  for (let i = App.currentIndex + 1; i < App.filtered.length; i++) {
+    const r = App.reviews[App.filtered[i].email];
+    if (!r?.rating) {
+      saveNotes();
+      App.currentIndex = i;
+      saveState();
+      renderCard();
+      return;
+    }
+  }
+  // If none found ahead, just go next
+  if (App.currentIndex + 1 < App.filtered.length) {
+    navigate(1);
+  }
+}
+
+function navigateToNextUnreviewed() {
+  for (let i = App.currentIndex + 1; i < App.filtered.length; i++) {
+    const r = App.reviews[App.filtered[i].email];
+    if (!r?.rating) {
+      saveNotes();
+      App.currentIndex = i;
+      saveState();
+      renderCard();
+      return;
+    }
+  }
+  // Wrap around
+  for (let i = 0; i < App.currentIndex; i++) {
+    const r = App.reviews[App.filtered[i].email];
+    if (!r?.rating) {
+      saveNotes();
+      App.currentIndex = i;
+      saveState();
+      renderCard();
+      return;
+    }
+  }
+}
+
+function saveNotes() {
+  const c = App.filtered[App.currentIndex];
+  if (!c) return;
+  const notes = document.getElementById('candidateNotes').value;
+  if (notes || App.reviews[c.email]) {
+    if (!App.reviews[c.email]) {
+      App.reviews[c.email] = { rating: null, notes: '', reviewedAt: null, reviewer: App.reviewer };
+    }
+    App.reviews[c.email].notes = notes;
+    saveState();
+  }
+}
+
+// ═══════════════════════════════════════════
+// Gallery
+// ═══════════════════════════════════════════
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '';
+
+  if (App.galleryObserver) App.galleryObserver.disconnect();
+
+  App.galleryObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const src = el.dataset.src;
+        if (src) {
+          const img = new Image();
+          img.onload = () => { el.replaceChildren(img); };
+          img.onerror = () => { el.innerHTML = '<span style="color:var(--text-muted);font-size:12px">No photo</span>'; };
+          img.src = src;
+          el.removeAttribute('data-src');
+        }
+        App.galleryObserver.unobserve(el);
+      }
+    }
+  }, { rootMargin: '300px' });
+
+  for (let i = 0; i < App.filtered.length; i++) {
+    const c = App.filtered[i];
+    const review = App.reviews[c.email];
+    const cell = document.createElement('div');
+    cell.className = 'gallery-cell';
+    cell.dataset.index = i;
+
+    let badgeHTML = '';
+    if (review?.rating) {
+      badgeHTML = `<span class="gallery-cell__badge gallery-cell__badge--${review.rating}">${review.rating}</span>`;
+    }
+
+    cell.innerHTML = `
+      <div class="gallery-cell__photo" data-src="${c.photoUrl || ''}">
+        <span style="color:var(--text-muted);font-size:12px">Loading...</span>
+      </div>
+      <div class="gallery-cell__info">
+        <span class="gallery-cell__name">${c.name}</span>
+        <span class="gallery-cell__age">${c.age}</span>
+      </div>
+      ${badgeHTML}
+      <div class="gallery-cell__actions">
+        <button class="g-yes" data-rate="yes">Yes</button>
+        <button class="g-maybe" data-rate="maybe">Maybe</button>
+        <button class="g-no" data-rate="no">No</button>
+      </div>
+    `;
+
+    // Click cell to go to card view
+    cell.addEventListener('click', (e) => {
+      if (e.target.dataset.rate) {
+        e.stopPropagation();
+        const idx = parseInt(cell.dataset.index);
+        const candidate = App.filtered[idx];
+        App.reviews[candidate.email] = {
+          rating: e.target.dataset.rate,
+          notes: App.reviews[candidate.email]?.notes || '',
+          reviewedAt: new Date().toISOString(),
+          reviewer: App.reviewer,
+        };
+        saveState();
+        renderGallery();
+        return;
+      }
+      App.currentIndex = parseInt(cell.dataset.index);
+      showScreen('review');
+    });
+
+    grid.appendChild(cell);
+
+    // Observe photo for lazy loading
+    const photoEl = cell.querySelector('.gallery-cell__photo');
+    if (photoEl.dataset.src) {
+      App.galleryObserver.observe(photoEl);
+    }
+  }
+
+  renderProgress();
+}
+
+// ═══════════════════════════════════════════
+// Export
+// ═══════════════════════════════════════════
+function exportCSV(filterType) {
+  const headers = ['Name', 'Email', 'Instagram', 'Age', 'Ethnicity', 'Skin Tone', 'Skin Needs', 'Products', 'Rating', 'Notes', 'Reviewer', 'Reviewed At', 'Photo URL', 'Video URL'];
+  const rows = [headers];
+
+  for (const c of App.candidates) {
+    const r = App.reviews[c.email];
+    const rating = r?.rating || '';
+
+    if (filterType === 'rated' && !rating) continue;
+    if (filterType === 'yes' && rating !== 'yes') continue;
+    if (filterType === 'maybe' && rating !== 'maybe') continue;
+    if (filterType === 'yes+maybe' && rating !== 'yes' && rating !== 'maybe') continue;
+    if (filterType === 'no' && rating !== 'no') continue;
+
+    rows.push([
+      c.name, c.email, c.instagram, c.age, c.ethnicity, c.skinTone,
+      c.skinNeeds.join('; '), c.products, rating, r?.notes || '',
+      r?.reviewer || '', r?.reviewedAt || '', c.photoUrl, c.videoUrl
+    ]);
+  }
+
+  const csv = rows.map(row =>
+    row.map(cell => {
+      const str = String(cell ?? '');
+      return str.includes(',') || str.includes('"') || str.includes('\n')
+        ? '"' + str.replace(/"/g, '""') + '"'
+        : str;
+    }).join(',')
+  ).join('\n');
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `casting-reviews-${App.reviewer || 'export'}-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ═══════════════════════════════════════════
+// Screen Management
+// ═══════════════════════════════════════════
+function showScreen(screen) {
+  App.currentScreen = screen;
+  document.getElementById('screen-upload').style.display = screen === 'upload' ? 'flex' : 'none';
+  document.getElementById('screen-review').style.display = screen === 'review' ? 'flex' : 'none';
+  document.getElementById('screen-gallery').style.display = screen === 'gallery' ? 'flex' : 'none';
+
+  if (screen === 'review') {
+    applyFilters();
+    if (App.currentIndex >= App.filtered.length) App.currentIndex = 0;
+    renderCard();
+  } else if (screen === 'gallery') {
+    applyFilters();
+    renderGallery();
+  }
+}
+
+// ═══════════════════════════════════════════
+// Populate filter dropdowns
+// ═══════════════════════════════════════════
+function populateFilters() {
+  const ethnicities = [...new Set(App.candidates.map(c => c.ethnicity).filter(Boolean))].sort();
+  const tones = [...new Set(App.candidates.flatMap(c => c.skinTone.split(',').map(s => s.trim())).filter(Boolean))].sort();
+
+  const ethSelect = document.getElementById('filterEthnicity');
+  ethSelect.innerHTML = '<option value="">All</option>' + ethnicities.map(e => `<option value="${e}">${e}</option>`).join('');
+
+  const toneSelect = document.getElementById('filterSkinTone');
+  toneSelect.innerHTML = '<option value="">All</option>' + tones.map(t => `<option value="${t}">${t}</option>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// Event Handlers
+// ═══════════════════════════════════════════
+function init() {
+  loadState();
+
+  // Restore reviewer name
+  if (App.reviewer) {
+    document.getElementById('reviewerName').value = App.reviewer;
+  }
+
+  // Auto-advance toggle
+  document.getElementById('autoAdvance').checked = App.autoAdvance;
+
+  // Drop zone
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) handleFile(fileInput.files[0]);
+  });
+
+  // Chunk options
+  document.getElementById('chunkOptions').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chunk-btn');
+    if (!btn) return;
+    document.querySelectorAll('.chunk-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('customRange').classList.toggle('visible', btn.dataset.chunk === 'custom');
+  });
+
+  // Start button
+  document.getElementById('btnStart').addEventListener('click', startReview);
+
+  // Reviewer name enables start
+  document.getElementById('reviewerName').addEventListener('input', () => {
+    document.getElementById('btnStart').disabled = !document.getElementById('reviewerName').value.trim();
+  });
+
+  // Navigation
+  document.getElementById('navPrev').addEventListener('click', () => navigate(-1));
+  document.getElementById('navNext').addEventListener('click', () => navigate(1));
+
+  // Rating buttons
+  document.querySelectorAll('.rating-btn').forEach(btn => {
+    btn.addEventListener('click', () => rate(btn.dataset.rating));
+  });
+
+  // Notes auto-save on blur
+  document.getElementById('candidateNotes').addEventListener('blur', saveNotes);
+
+  // Auto-advance toggle
+  document.getElementById('autoAdvance').addEventListener('change', (e) => {
+    App.autoAdvance = e.target.checked;
+    saveState();
+  });
+
+  // Filter toggle
+  document.getElementById('btnFilter').addEventListener('click', () => {
+    document.getElementById('filterBar').classList.toggle('visible');
+  });
+  document.getElementById('btnFilter2').addEventListener('click', () => {
+    document.getElementById('filterBar2').classList.toggle('visible');
+  });
+
+  // Gallery toggle
+  document.getElementById('btnGallery').addEventListener('click', () => showScreen('gallery'));
+  document.getElementById('btnCardView').addEventListener('click', () => showScreen('review'));
+
+  // Export
+  document.getElementById('btnExport').addEventListener('click', () => {
+    document.getElementById('exportModal').classList.add('visible');
+  });
+  document.getElementById('btnExport2').addEventListener('click', () => {
+    document.getElementById('exportModal').classList.add('visible');
+  });
+  document.getElementById('exportCancel').addEventListener('click', () => {
+    document.getElementById('exportModal').classList.remove('visible');
+  });
+  document.getElementById('exportConfirm').addEventListener('click', () => {
+    const filter = document.getElementById('exportFilter').value;
+    exportCSV(filter);
+    document.getElementById('exportModal').classList.remove('visible');
+  });
+
+  // Shortcuts overlay
+  document.getElementById('btnShortcuts').addEventListener('click', () => {
+    document.getElementById('shortcutsOverlay').classList.toggle('visible');
+  });
+  document.getElementById('shortcutsOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('shortcutsOverlay')) {
+      document.getElementById('shortcutsOverlay').classList.remove('visible');
+    }
+  });
+  document.getElementById('exportModal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('exportModal')) {
+      document.getElementById('exportModal').classList.remove('visible');
+    }
+  });
+
+  // Filter controls
+  const filterHandler = () => {
+    App.filters.search = document.getElementById('filterSearch').value;
+    App.filters.ageMin = parseInt(document.getElementById('filterAgeMin').value) || 0;
+    App.filters.ageMax = parseInt(document.getElementById('filterAgeMax').value) || 999;
+    App.filters.ethnicity = document.getElementById('filterEthnicity').value;
+    App.filters.skinTone = document.getElementById('filterSkinTone').value;
+    applyFilters();
+    App.currentIndex = 0;
+    renderCard();
+  };
+
+  ['filterSearch', 'filterAgeMin', 'filterAgeMax', 'filterEthnicity', 'filterSkinTone'].forEach(id => {
+    document.getElementById(id).addEventListener('input', debounce(filterHandler, 200));
+    document.getElementById(id).addEventListener('change', filterHandler);
+  });
+
+  // Gallery search
+  document.getElementById('filterSearch2').addEventListener('input', debounce(() => {
+    App.filters.search = document.getElementById('filterSearch2').value;
+    applyFilters();
+    renderGallery();
+  }, 200));
+
+  // Status filter pills
+  document.querySelectorAll('#filterStatus .filter-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('#filterStatus .filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      App.filters.status = pill.dataset.status;
+      applyFilters();
+      App.currentIndex = 0;
+      renderCard();
+    });
+  });
+
+  document.querySelectorAll('#filterStatus2 .filter-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('#filterStatus2 .filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      App.filters.status = pill.dataset.status;
+      applyFilters();
+      renderGallery();
+    });
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', handleKeyboard);
+}
+
+function handleFile(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const text = e.target.result;
+    const rows = parseCSV(text);
+
+    if (rows.length < 2) {
+      alert('CSV appears empty or malformed.');
+      return;
+    }
+
+    const headers = rows[0];
+    const dataRows = rows.slice(1);
+    App.candidates = buildCandidates(dataRows, headers);
+
+    // Count existing reviews
+    let existingCount = 0;
+    for (const c of App.candidates) {
+      if (App.reviews[c.email]?.rating) existingCount++;
+    }
+
+    const summary = document.getElementById('setupSummary');
+    summary.innerHTML = `<strong>${App.candidates.length}</strong> candidates loaded from <strong>${file.name}</strong>` +
+      (existingCount ? ` · <strong>${existingCount}</strong> already have ratings from a previous session` : '');
+
+    // Update chunk labels
+    const total = App.candidates.length;
+    const q = Math.ceil(total / 4);
+    const btns = document.querySelectorAll('.chunk-btn');
+    btns[1].textContent = `1–${q}`;
+    btns[2].textContent = `${q + 1}–${q * 2}`;
+    btns[3].textContent = `${q * 2 + 1}–${q * 3}`;
+    btns[4].textContent = `${q * 3 + 1}–${total}`;
+    document.getElementById('chunkTo').placeholder = String(total);
+
+    document.getElementById('setupPanel').classList.add('visible');
+
+    // Enable start if name already filled
+    if (document.getElementById('reviewerName').value.trim()) {
+      document.getElementById('btnStart').disabled = false;
+    }
+
+    populateFilters();
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function startReview() {
+  App.reviewer = document.getElementById('reviewerName').value.trim();
+  if (!App.reviewer) return;
+
+  // Determine chunk
+  const activeChunk = document.querySelector('.chunk-btn.active');
+  const total = App.candidates.length;
+  const q = Math.ceil(total / 4);
+
+  switch (activeChunk?.dataset.chunk) {
+    case 'q1': App.chunkStart = 0; App.chunkEnd = q; break;
+    case 'q2': App.chunkStart = q; App.chunkEnd = q * 2; break;
+    case 'q3': App.chunkStart = q * 2; App.chunkEnd = q * 3; break;
+    case 'q4': App.chunkStart = q * 3; App.chunkEnd = total; break;
+    case 'custom':
+      App.chunkStart = Math.max(0, (parseInt(document.getElementById('chunkFrom').value) || 1) - 1);
+      App.chunkEnd = Math.min(total, parseInt(document.getElementById('chunkTo').value) || total);
+      break;
+    default: App.chunkStart = 0; App.chunkEnd = total;
+  }
+
+  applyFilters();
+
+  // Try to restore last position
+  if (App.currentIndex >= App.filtered.length) App.currentIndex = 0;
+
+  saveState();
+  showScreen('review');
+}
+
+function handleKeyboard(e) {
+  // Don't intercept when typing in inputs
+  const tag = document.activeElement.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+    if (e.key === 'Escape') document.activeElement.blur();
+    return;
+  }
+
+  if (App.currentScreen !== 'review' && App.currentScreen !== 'gallery') return;
+
+  // Close overlays
+  if (e.key === 'Escape') {
+    document.getElementById('shortcutsOverlay').classList.remove('visible');
+    document.getElementById('exportModal').classList.remove('visible');
+    return;
+  }
+
+  if (App.currentScreen === 'review') {
+    switch (e.key) {
+      case '1': rate('yes'); break;
+      case '2': rate('maybe'); break;
+      case '3': rate('no'); break;
+      case '0':
+      case 'Backspace': clearRating(); break;
+      case 'ArrowLeft':
+      case 'k': navigate(-1); break;
+      case 'ArrowRight':
+      case 'j': navigate(1); break;
+      case ']': navigateToNextUnreviewed(); break;
+      case 'n':
+      case 'N': e.preventDefault(); document.getElementById('candidateNotes').focus(); break;
+      case 'g':
+      case 'G': showScreen('gallery'); break;
+      case 'f':
+      case 'F': document.getElementById('filterBar').classList.toggle('visible'); break;
+      case 'e':
+      case 'E': document.getElementById('exportModal').classList.add('visible'); break;
+      case '?': document.getElementById('shortcutsOverlay').classList.toggle('visible'); break;
+    }
+  } else if (App.currentScreen === 'gallery') {
+    switch (e.key) {
+      case 'g':
+      case 'G': showScreen('review'); break;
+      case 'f':
+      case 'F': document.getElementById('filterBar2').classList.toggle('visible'); break;
+      case 'e':
+      case 'E': document.getElementById('exportModal').classList.add('visible'); break;
+    }
+  }
+}
+
+function debounce(fn, ms) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  };
+}
+
+// Boot
+init();
+</script>
+</body>
+</html>
