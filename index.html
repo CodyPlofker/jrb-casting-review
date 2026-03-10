@@ -1089,11 +1089,18 @@
     </div>
   </div>
   <div class="analytics-body">
-    <div class="analytics-reviewer-filter" style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+    <div class="analytics-reviewer-filter" style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
       <label style="font-size: 12px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; color: var(--text-muted);">Viewing ratings by</label>
       <select id="analyticsReviewerFilter" style="font-family: var(--font-body); font-size: 14px; padding: 6px 12px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text); border-radius: var(--radius);">
         <option value="mine">My ratings</option>
         <option value="all">Everyone (combined)</option>
+      </select>
+      <label style="font-size: 12px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; color: var(--text-muted); margin-left: 12px;">Show</label>
+      <select id="analyticsStatusFilter" style="font-family: var(--font-body); font-size: 14px; padding: 6px 12px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text); border-radius: var(--radius);">
+        <option value="yes+maybe">Yes + Maybe</option>
+        <option value="yes">Yes only</option>
+        <option value="maybe">Maybe only</option>
+        <option value="all">All rated</option>
       </select>
     </div>
     <div class="analytics-card analytics-card--full" style="margin-bottom: 24px">
@@ -2131,8 +2138,10 @@ function renderAnalytics() {
   }
   if (scoreCount) avgScore = Math.round(avgScore / scoreCount);
 
-  const filterLabel = document.getElementById('analyticsReviewerFilter');
-  const selectedText = filterLabel.options[filterLabel.selectedIndex].text;
+  // Apply status filter for charts
+  const statusFilter = document.getElementById('analyticsStatusFilter').value;
+  const chartYes = statusFilter === 'maybe' ? [] : yesList;
+  const chartMaybe = statusFilter === 'yes' ? [] : maybeList;
 
   document.getElementById('analyticsSummary').innerHTML = `
     <div class="analytics-stat"><div class="analytics-stat__value" style="color:var(--green)">${totalYes}</div><div class="analytics-stat__label">Yes</div></div>
@@ -2145,10 +2154,10 @@ function renderAnalytics() {
 
   const gridEl = document.getElementById('analyticsGrid');
   gridEl.innerHTML = '';
-  gridEl.innerHTML += buildBarChart('By Persona', buildPersonaData(yesList, maybeList), true);
-  gridEl.innerHTML += buildBarChart('By Age Range', buildAgeData(yesList, maybeList));
-  gridEl.innerHTML += buildBarChart('By Ethnicity', buildEthnicityData(yesList, maybeList));
-  gridEl.innerHTML += buildBarChart('By Skin Tone', buildSkinToneData(yesList, maybeList));
+  gridEl.innerHTML += buildBarChart('By Persona', buildPersonaData(chartYes, chartMaybe), true);
+  gridEl.innerHTML += buildBarChart('By Age Range', buildAgeData(chartYes, chartMaybe));
+  gridEl.innerHTML += buildBarChart('By Ethnicity', buildEthnicityData(chartYes, chartMaybe));
+  gridEl.innerHTML += buildBarChart('By Skin Tone', buildSkinToneData(chartYes, chartMaybe));
   renderProgress();
 }
 
@@ -2355,6 +2364,7 @@ function init() {
   document.getElementById('btnCardsFromAnalytics').addEventListener('click', () => showScreen('review'));
   document.getElementById('btnGalleryFromAnalytics').addEventListener('click', () => showScreen('gallery'));
   document.getElementById('analyticsReviewerFilter').addEventListener('change', () => renderAnalytics());
+  document.getElementById('analyticsStatusFilter').addEventListener('change', () => renderAnalytics());
 
   // Export
   ['btnExport', 'btnExport2', 'btnExport3'].forEach(id => {
