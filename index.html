@@ -331,124 +331,29 @@
 
     .review-body { flex: 1; display: flex; overflow: hidden; }
 
-    /* ── Queue Sidebar ── */
-    .queue-sidebar {
-      width: 320px;
-      flex-shrink: 0;
-      border-right: 1px solid var(--border);
+    /* ── Nav Arrows ── */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
       display: flex;
-      flex-direction: column;
-      background: var(--bg);
-      overflow: hidden;
-    }
-
-    .queue-sidebar__header {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-    }
-
-    .queue-sidebar__count {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .queue-sidebar__sort {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 0.9rem;
-      color: var(--text-muted);
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       cursor: pointer;
-      background: none;
-      border: none;
-    }
-    .queue-sidebar__sort:hover { color: var(--text); }
-
-    .queue-sidebar__list {
-      flex: 1;
-      overflow-y: auto;
-    }
-    .queue-sidebar__list::-webkit-scrollbar { width: 4px; }
-    .queue-sidebar__list::-webkit-scrollbar-track { background: transparent; }
-    .queue-sidebar__list::-webkit-scrollbar-thumb { background: var(--text-light); }
-
-    .queue-item {
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 40px 1fr auto;
-      gap: 12px;
-      align-items: center;
-      cursor: pointer;
-      transition: background-color 0.15s;
-    }
-    .queue-item:hover { background: var(--bg-hover); }
-    .queue-item.active {
-      background: var(--text);
-      color: var(--bg);
-      border-bottom-color: var(--text);
-    }
-    .queue-item.active .queue-item__meta,
-    .queue-item.active .queue-item__name { color: var(--bg); }
-
-    .queue-item__thumb {
-      width: 40px;
-      height: 52px;
-      background: var(--border);
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-    .queue-item__thumb img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: grayscale(0.3);
-    }
-    .queue-item.active .queue-item__thumb img { filter: grayscale(0); }
-
-    .queue-item__info { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-    .queue-item__name {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      line-height: 1.1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .queue-item__meta {
-      font-size: 11px;
+      font-size: 20px;
       color: var(--text-muted);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      z-index: 10;
+      transition: background .15s, color .15s;
     }
-
-    .queue-item__indicators { display: flex; gap: 4px; align-items: center; flex-shrink: 0; }
-
-    .queue-item__dot {
-      width: 8px; height: 8px; border-radius: 50%;
-    }
-    .queue-item__dot--yes { background: var(--green); }
-    .queue-item__dot--maybe { background: var(--amber); }
-    .queue-item__dot--no { background: var(--red); }
-
-    .queue-item__star {
-      font-size: 14px; cursor: pointer; opacity: 0.2; transition: opacity .15s;
-      background: none; border: none; padding: 0; line-height: 1;
-    }
-    .queue-item__star:hover { opacity: 0.6; }
-    .queue-item__star.bookmarked { opacity: 1; color: var(--amber); }
-    .queue-item.active .queue-item__star { color: var(--bg); }
-    .queue-item.active .queue-item__star.bookmarked { color: var(--amber); opacity: 1; }
-
-    .queue-item__conflict {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--amber); display: none;
-    }
-    .queue-item__conflict.visible { display: block; }
+    .nav-arrow:hover { background: var(--bg-hover); color: var(--text); }
+    .nav-arrow:disabled { opacity: 0.2; cursor: default; }
+    .nav-arrow--prev { left: 12px; }
+    .nav-arrow--next { right: 12px; }
 
     /* ── Review Panel ── */
     .review-panel {
@@ -899,16 +804,8 @@
     @media (max-width: 768px) {
       .app-header { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
       .progress-bar { max-width: none; }
-      .queue-sidebar { width: 100%; height: 80px; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; }
-      .queue-sidebar__header { display: none; }
-      .queue-sidebar__list { display: flex; overflow-x: auto; overflow-y: hidden; flex-direction: row; }
-      .queue-item {
-        grid-template-columns: 40px auto;
-        min-width: 120px; border-bottom: none; border-right: 1px solid var(--border);
-        padding: 8px 12px;
-      }
-      .queue-item__indicators { display: none; }
       .review-panel { flex-direction: column; }
+      .nav-arrow { width: 36px; height: 36px; font-size: 16px; }
       .review-panel__detail { width: 100%; border-left: none; border-top: 1px solid var(--border); }
       .review-body { flex-direction: column; }
       .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
@@ -1042,15 +939,10 @@
   </div>
 
   <div class="review-body">
-    <aside class="queue-sidebar" id="queueSidebar">
-      <div class="queue-sidebar__header">
-        <span class="queue-sidebar__count" id="queueCount">Queue (0)</span>
-      </div>
-      <div class="queue-sidebar__list" id="queueList"></div>
-    </aside>
-
     <div class="review-panel">
-      <div class="review-panel__media">
+      <div class="review-panel__media" style="position:relative;">
+        <button class="nav-arrow nav-arrow--prev" id="navPrev" title="Previous (←)">‹</button>
+        <button class="nav-arrow nav-arrow--next" id="navNext" title="Next (→)">›</button>
         <div class="review-panel__photo" id="cardPhoto">
           <span class="card-photo__placeholder">No photo</span>
         </div>
@@ -1197,6 +1089,13 @@
     </div>
   </div>
   <div class="analytics-body">
+    <div class="analytics-reviewer-filter" style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+      <label style="font-size: 12px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; color: var(--text-muted);">Viewing ratings by</label>
+      <select id="analyticsReviewerFilter" style="font-family: var(--font-body); font-size: 14px; padding: 6px 12px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text); border-radius: var(--radius);">
+        <option value="mine">My ratings</option>
+        <option value="all">Everyone (combined)</option>
+      </select>
+    </div>
     <div class="analytics-card analytics-card--full" style="margin-bottom: 24px">
       <h3>Overall Summary</h3>
       <div class="analytics-summary" id="analyticsSummary"></div>
@@ -1281,7 +1180,6 @@ const App = {
   },
   columnMap: {},
   galleryObserver: null,
-  queueObserver: null,
   syncInterval: null,
 };
 
@@ -1625,7 +1523,7 @@ async function smartSearch(query) {
 
     applyFilters();
     App.currentIndex = 0;
-    if (App.currentScreen === 'review') { renderCard(); renderQueue(); }
+    if (App.currentScreen === 'review') { renderCard(); }
     if (App.currentScreen === 'gallery') renderGallery();
   } catch (e) {
     console.error('Smart search error:', e);
@@ -1643,7 +1541,7 @@ function clearSmartSearch() {
   document.getElementById('smartSearchInput').value = '';
   applyFilters();
   App.currentIndex = 0;
-  if (App.currentScreen === 'review') { renderCard(); renderQueue(); }
+  if (App.currentScreen === 'review') { renderCard(); }
   if (App.currentScreen === 'gallery') renderGallery();
 }
 
@@ -1689,99 +1587,13 @@ function applyFilters() {
 }
 
 // ═══════════════════════════════════════════
-// Queue Sidebar
+// Nav Arrows
 // ═══════════════════════════════════════════
-function renderQueue() {
-  const list = document.getElementById('queueList');
-  list.innerHTML = '';
-  document.getElementById('queueCount').textContent = `Queue (${App.filtered.length})`;
-
-  if (App.queueObserver) App.queueObserver.disconnect();
-  App.queueObserver = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const src = el.dataset.src;
-        if (src) {
-          const img = new Image();
-          img.onload = () => { el.replaceChildren(img); };
-          img.src = src;
-          el.removeAttribute('data-src');
-        }
-        App.queueObserver.unobserve(el);
-      }
-    }
-  }, { root: list, rootMargin: '200px' });
-
-  const frag = document.createDocumentFragment();
-  for (let i = 0; i < App.filtered.length; i++) {
-    const c = App.filtered[i];
-    const review = App.reviews[c.email];
-    const isActive = i === App.currentIndex;
-
-    const item = document.createElement('div');
-    item.className = 'queue-item' + (isActive ? ' active' : '');
-    item.dataset.index = i;
-    item.dataset.email = c.email;
-
-    // Thumb
-    const thumb = document.createElement('div');
-    thumb.className = 'queue-item__thumb';
-    if (c.photoUrl) thumb.dataset.src = c.photoUrl;
-    item.appendChild(thumb);
-
-    // Info
-    const info = document.createElement('div');
-    info.className = 'queue-item__info';
-    const name = document.createElement('div');
-    name.className = 'queue-item__name';
-    name.textContent = c.name;
-    info.appendChild(name);
-    const meta = document.createElement('div');
-    meta.className = 'queue-item__meta';
-    meta.textContent = `${c.age} · ${c.ethnicity || ''}`;
-    info.appendChild(meta);
-    item.appendChild(info);
-
-    // Indicators
-    const indicators = document.createElement('div');
-    indicators.className = 'queue-item__indicators';
-
-    if (review?.rating) {
-      const dot = document.createElement('span');
-      dot.className = `queue-item__dot queue-item__dot--${review.rating}`;
-      indicators.appendChild(dot);
-    }
-
-    const star = document.createElement('button');
-    star.className = 'queue-item__star' + (App.bookmarks.has(c.email) ? ' bookmarked' : '');
-    star.textContent = App.bookmarks.has(c.email) ? '★' : '☆';
-    indicators.appendChild(star);
-
-    if (App.conflicts.has(c.email)) {
-      const conflict = document.createElement('span');
-      conflict.className = 'queue-item__conflict visible';
-      conflict.title = 'Team disagreement';
-      indicators.appendChild(conflict);
-    }
-
-    item.appendChild(indicators);
-    frag.appendChild(item);
-
-    if (c.photoUrl) App.queueObserver.observe(thumb);
-  }
-  list.appendChild(frag);
-
-  renderQueueHighlight();
-}
-
-function renderQueueHighlight() {
-  document.querySelectorAll('.queue-item.active').forEach(el => el.classList.remove('active'));
-  const item = document.querySelector(`.queue-item[data-index="${App.currentIndex}"]`);
-  if (item) {
-    item.classList.add('active');
-    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  }
+function updateNavArrows() {
+  const prev = document.getElementById('navPrev');
+  const next = document.getElementById('navNext');
+  if (prev) prev.disabled = App.currentIndex <= 0;
+  if (next) next.disabled = App.currentIndex >= App.filtered.length - 1;
 }
 
 // ═══════════════════════════════════════════
@@ -1855,7 +1667,7 @@ function renderCard() {
   renderVideo(c.videoUrl);
   preloadAhead(3);
   renderProgress();
-  renderQueueHighlight();
+  updateNavArrows();
 }
 
 function renderScore(c) {
@@ -2031,19 +1843,6 @@ function rate(rating) {
 
   const r = App.reviews[c.email];
   postRating(c.email, r?.rating, r?.notes);
-
-  // Update queue item dot without full re-render
-  const qItem = document.querySelector(`.queue-item[data-index="${App.currentIndex}"]`);
-  if (qItem) {
-    const existingDot = qItem.querySelector('.queue-item__dot');
-    if (existingDot) existingDot.remove();
-    if (r?.rating) {
-      const dot = document.createElement('span');
-      dot.className = `queue-item__dot queue-item__dot--${r.rating}`;
-      const indicators = qItem.querySelector('.queue-item__indicators');
-      indicators.insertBefore(dot, indicators.firstChild);
-    }
-  }
 
   renderFilterCounts();
 
@@ -2264,22 +2063,76 @@ function renderGallery() {
 // ═══════════════════════════════════════════
 // Analytics
 // ═══════════════════════════════════════════
+function populateReviewerDropdown() {
+  const select = document.getElementById('analyticsReviewerFilter');
+  const reviewers = new Set();
+  for (const email of Object.keys(App.teamRatings)) {
+    for (const name of Object.keys(App.teamRatings[email])) {
+      reviewers.add(name);
+    }
+  }
+  // Keep existing value
+  const current = select.value;
+  // Clear dynamic options (keep "mine" and "all")
+  while (select.options.length > 2) select.remove(2);
+  // Add individual reviewers
+  for (const name of [...reviewers].sort()) {
+    const opt = document.createElement('option');
+    opt.value = `reviewer:${name}`;
+    opt.textContent = name;
+    select.appendChild(opt);
+  }
+  // Restore selection if still valid
+  if ([...select.options].some(o => o.value === current)) select.value = current;
+}
+
+function getAnalyticsRating(email) {
+  const filter = document.getElementById('analyticsReviewerFilter').value;
+  if (filter === 'mine') {
+    return App.reviews[email]?.rating || null;
+  }
+  if (filter === 'all') {
+    // Combine: check local first, then team ratings
+    const local = App.reviews[email]?.rating;
+    if (local) return local;
+    const team = App.teamRatings[email];
+    if (!team) return null;
+    // Use most common rating across all reviewers
+    const counts = {};
+    for (const r of Object.values(team)) {
+      if (r.rating) counts[r.rating] = (counts[r.rating] || 0) + 1;
+    }
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    return sorted[0]?.[0] || null;
+  }
+  if (filter.startsWith('reviewer:')) {
+    const reviewer = filter.slice(9);
+    const team = App.teamRatings[email];
+    return team?.[reviewer]?.rating || null;
+  }
+  return null;
+}
+
 function renderAnalytics() {
+  populateReviewerDropdown();
   const allCandidates = App.candidates.slice(App.chunkStart, App.chunkEnd);
   let totalYes = 0, totalMaybe = 0, totalNo = 0, totalUnreviewed = 0;
   let avgScore = 0, scoreCount = 0;
   const picks = [], yesList = [], maybeList = [];
 
   for (const c of allCandidates) {
-    const r = App.reviews[c.email];
-    if (!r?.rating) { totalUnreviewed++; continue; }
-    if (r.rating === 'yes') { totalYes++; yesList.push(c); picks.push(c); }
-    else if (r.rating === 'maybe') { totalMaybe++; maybeList.push(c); picks.push(c); }
-    else if (r.rating === 'no') { totalNo++; }
+    const rating = getAnalyticsRating(c.email);
+    if (!rating) { totalUnreviewed++; continue; }
+    if (rating === 'yes') { totalYes++; yesList.push(c); picks.push(c); }
+    else if (rating === 'maybe') { totalMaybe++; maybeList.push(c); picks.push(c); }
+    else if (rating === 'no') { totalNo++; }
     const s = App.scores[c.email];
     if (s?.composite != null) { avgScore += s.composite; scoreCount++; }
   }
   if (scoreCount) avgScore = Math.round(avgScore / scoreCount);
+
+  const filterLabel = document.getElementById('analyticsReviewerFilter');
+  const selectedText = filterLabel.options[filterLabel.selectedIndex].text;
 
   document.getElementById('analyticsSummary').innerHTML = `
     <div class="analytics-stat"><div class="analytics-stat__value" style="color:var(--green)">${totalYes}</div><div class="analytics-stat__label">Yes</div></div>
@@ -2422,7 +2275,6 @@ function showScreen(screen) {
     applyFilters();
     if (App.currentIndex >= App.filtered.length) App.currentIndex = 0;
     renderCard();
-    renderQueue();
   } else if (screen === 'gallery') {
     applyFilters();
     renderGallery();
@@ -2477,24 +2329,9 @@ function init() {
     saveState();
   });
 
-  // Queue sidebar click
-  document.getElementById('queueList').addEventListener('click', (e) => {
-    const starBtn = e.target.closest('.queue-item__star');
-    if (starBtn) {
-      e.stopPropagation();
-      const item = starBtn.closest('.queue-item');
-      toggleBookmark(item.dataset.email);
-      starBtn.classList.toggle('bookmarked');
-      starBtn.textContent = starBtn.classList.contains('bookmarked') ? '★' : '☆';
-      return;
-    }
-    const item = e.target.closest('.queue-item');
-    if (!item) return;
-    saveNotes();
-    App.currentIndex = parseInt(item.dataset.index);
-    saveState();
-    renderCard();
-  });
+  // Nav arrows
+  document.getElementById('navPrev').addEventListener('click', () => navigate(-1));
+  document.getElementById('navNext').addEventListener('click', () => navigate(1));
 
   // Bookmark star on detail panel
   document.getElementById('bookmarkStar').addEventListener('click', () => {
@@ -2517,6 +2354,7 @@ function init() {
   document.getElementById('btnAnalytics2').addEventListener('click', () => showScreen('analytics'));
   document.getElementById('btnCardsFromAnalytics').addEventListener('click', () => showScreen('review'));
   document.getElementById('btnGalleryFromAnalytics').addEventListener('click', () => showScreen('gallery'));
+  document.getElementById('analyticsReviewerFilter').addEventListener('change', () => renderAnalytics());
 
   // Export
   ['btnExport', 'btnExport2', 'btnExport3'].forEach(id => {
@@ -2551,7 +2389,7 @@ function init() {
   document.getElementById('sortBy').addEventListener('change', (e) => {
     App.sortBy = e.target.value;
     document.getElementById('sortBy2').value = e.target.value;
-    applyFilters(); App.currentIndex = 0; renderCard(); renderQueue(); saveState();
+    applyFilters(); App.currentIndex = 0; renderCard(); saveState();
   });
   document.getElementById('sortBy2').addEventListener('change', (e) => {
     App.sortBy = e.target.value;
@@ -2577,7 +2415,7 @@ function init() {
     App.filters.ethnicity = document.getElementById('filterEthnicity').value;
     App.filters.skinTone = document.getElementById('filterSkinTone').value;
     App.filters.persona = document.getElementById('filterPersona').value;
-    applyFilters(); App.currentIndex = 0; renderCard(); renderQueue();
+    applyFilters(); App.currentIndex = 0; renderCard();
   };
 
   ['filterSearch', 'filterAgeMin', 'filterAgeMax', 'filterEthnicity', 'filterSkinTone', 'filterPersona'].forEach(id => {
@@ -2596,7 +2434,7 @@ function init() {
       document.querySelectorAll('#filterStatus .filter-pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
       App.filters.status = pill.dataset.status;
-      applyFilters(); App.currentIndex = 0; renderCard(); renderQueue();
+      applyFilters(); App.currentIndex = 0; renderCard();
     });
   });
 
