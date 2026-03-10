@@ -1,0 +1,6 @@
+.vercel
+node_modules/
+.env
+scripts/.env
+scripts/node_modules/
+scripts/scores-progress.json

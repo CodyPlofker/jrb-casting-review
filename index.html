@@ -60,50 +60,6 @@
       margin-bottom: 32px;
     }
 
-    .drop-zone {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 48px 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color .15s, background .15s;
-      background: var(--bg-card);
-    }
-
-    .drop-zone:hover, .drop-zone.drag-over {
-      border-color: var(--text);
-      background: var(--bg-hover);
-    }
-
-    .drop-zone__icon {
-      font-size: 36px;
-      margin-bottom: 12px;
-      opacity: .4;
-    }
-
-    .drop-zone__text {
-      font-size: 15px;
-      color: var(--text-muted);
-    }
-
-    .drop-zone__text strong {
-      color: var(--text);
-    }
-
-    .drop-zone input[type="file"] {
-      display: none;
-    }
-
-    /* ── Setup Panel (after CSV loaded) ── */
-    .setup-panel {
-      margin-top: 24px;
-      display: none;
-    }
-
-    .setup-panel.visible {
-      display: block;
-    }
-
     .setup-summary {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -504,12 +460,12 @@
     .candidate-meta {
       font-size: 14px;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .candidate-ig {
       display: inline-block;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .candidate-ig a {
@@ -520,6 +476,136 @@
 
     .candidate-ig a:hover {
       text-decoration: underline;
+    }
+
+    /* ── AI Score Section ── */
+    .score-section {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+
+    .score-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+    }
+
+    .score-badge--high { background: var(--green-bg); color: var(--green); }
+    .score-badge--mid { background: var(--amber-bg); color: var(--amber); }
+    .score-badge--low { background: var(--red-bg); color: var(--red); }
+
+    .score-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text-muted);
+    }
+
+    .score-breakdown {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .score-reasoning {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ── Persona Chips ── */
+    .persona-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .persona-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .persona-chip--ageless-matriarch { background: #f0e9df; color: #8B7355; }
+    .persona-chip--high-powered-executive { background: #e3eef8; color: #3A6EA5; }
+    .persona-chip--wellness-practitioner { background: #e5f5e0; color: #4A8B3F; }
+    .persona-chip--busy-suburban-supermom { background: #fae8d8; color: #B8723B; }
+    .persona-chip--creative-entrepreneur { background: #f3e5f5; color: #8E4A98; }
+    .persona-chip--dedicated-educator { background: #fff3e0; color: #C67C2E; }
+
+    /* ── Team Ratings ── */
+    .team-ratings {
+      margin-bottom: 16px;
+    }
+
+    .team-ratings__header {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .team-vote {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .team-vote:last-child { border-bottom: none; }
+
+    .team-vote__name {
+      font-weight: 600;
+      min-width: 60px;
+    }
+
+    .team-vote__rating {
+      padding: 1px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .team-vote__rating--yes { background: var(--green-bg); color: var(--green); }
+    .team-vote__rating--maybe { background: var(--amber-bg); color: var(--amber); }
+    .team-vote__rating--no { background: var(--red-bg); color: var(--red); }
+
+    .team-vote__notes {
+      color: var(--text-muted);
+      font-size: 12px;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .info-section {
@@ -654,6 +740,99 @@
       white-space: nowrap;
     }
 
+    /* ── Smart Search Bar ── */
+    .smart-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .smart-search__input {
+      flex: 1;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .smart-search__input:focus {
+      border-color: var(--text);
+    }
+
+    .smart-search__input::placeholder {
+      color: #bbb;
+    }
+
+    .smart-search__btn {
+      padding: 6px 14px;
+      background: var(--text);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .smart-search__btn:hover { opacity: .85; }
+    .smart-search__btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    .search-indicator {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: #e8f0fe;
+      border-bottom: 1px solid #c5d8f0;
+      font-size: 13px;
+      color: #1a56db;
+      flex-shrink: 0;
+    }
+
+    .search-indicator.visible { display: flex; }
+
+    .search-indicator__clear {
+      background: none;
+      border: none;
+      color: #1a56db;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* ── Sort Dropdown ── */
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .sort-group label {
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      font-size: 11px;
+    }
+
+    .sort-group select {
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+    }
+
     /* ── Gallery Screen ── */
     #screen-gallery {
       display: none;
@@ -705,6 +884,9 @@
 
     .gallery-cell__info {
       padding: 8px 10px;
+    }
+
+    .gallery-cell__top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -722,6 +904,18 @@
       font-size: 12px;
       color: var(--text-muted);
       flex-shrink: 0;
+    }
+
+    .gallery-cell__personas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      margin-top: 4px;
+    }
+
+    .gallery-cell__personas .persona-chip {
+      font-size: 9px;
+      padding: 1px 6px;
     }
 
     .gallery-cell__badge {
@@ -751,10 +945,43 @@
       color: var(--red);
     }
 
+    .gallery-cell__score {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(4px);
+    }
+
+    .gallery-cell__score--high { color: var(--green); }
+    .gallery-cell__score--mid { color: var(--amber); }
+    .gallery-cell__score--low { color: var(--red); }
+
+    .gallery-cell__team-count {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(255,255,255,.9);
+      color: var(--text-muted);
+    }
+
+    /* If score badge exists, move team count below it */
+    .gallery-cell__score + .gallery-cell__team-count {
+      top: 30px;
+    }
+
     /* Hover actions on gallery */
     .gallery-cell__actions {
       position: absolute;
-      bottom: 40px;
+      bottom: 52px;
       left: 0;
       right: 0;
       display: flex;
@@ -788,6 +1015,137 @@
     .gallery-cell__actions .g-yes { background: var(--green-bg); color: var(--green); }
     .gallery-cell__actions .g-maybe { background: var(--amber-bg); color: var(--amber); }
     .gallery-cell__actions .g-no { background: var(--red-bg); color: var(--red); }
+
+    /* ── Analytics Screen ── */
+    #screen-analytics {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .analytics-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+      gap: 24px;
+    }
+
+    .analytics-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .analytics-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .analytics-card--full {
+      grid-column: 1 / -1;
+    }
+
+    .analytics-summary {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .analytics-stat {
+      text-align: center;
+    }
+
+    .analytics-stat__value {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .analytics-stat__label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    /* Bar chart */
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar-row__label {
+      font-size: 12px;
+      font-weight: 600;
+      min-width: 140px;
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bar-row__bars {
+      flex: 1;
+      display: flex;
+      height: 22px;
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .bar-row__bar {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      min-width: 0;
+      transition: width .3s;
+    }
+
+    .bar-row__bar--yes { background: var(--green); }
+    .bar-row__bar--maybe { background: var(--amber); }
+    .bar-row__bar--no { background: var(--red); }
+
+    .bar-row__count {
+      font-size: 12px;
+      color: var(--text-muted);
+      min-width: 60px;
+      text-align: left;
+    }
+
+    .bar-row__target {
+      font-size: 10px;
+      color: var(--text-muted);
+      min-width: 50px;
+    }
+
+    .diversity-alert {
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: var(--red-bg);
+      color: var(--red);
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+    }
 
     /* ── Export Modal ── */
     .modal-overlay {
@@ -993,6 +1351,14 @@
       .header-actions .btn-icon span.desktop-only {
         display: none;
       }
+
+      .smart-search { max-width: none; }
+
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bar-row__label { min-width: 100px; font-size: 11px; }
     }
   </style>
 </head>
@@ -1049,15 +1415,34 @@
       </div>
       <button class="btn-icon" id="btnFilter">Filter</button>
       <button class="btn-icon" id="btnGallery">Grid</button>
+      <button class="btn-icon" id="btnAnalytics">Analytics</button>
       <button class="btn-icon" id="btnExport">Export</button>
       <button class="btn-icon" id="btnShortcuts">?</button>
     </div>
+  </div>
+
+  <!-- Smart search indicator -->
+  <div class="search-indicator" id="searchIndicator">
+    <span id="searchIndicatorText"></span>
+    <button class="search-indicator__clear" id="searchClear">Clear</button>
   </div>
 
   <div class="filter-bar" id="filterBar">
     <div class="filter-group">
       <label>Search</label>
       <input type="text" id="filterSearch" placeholder="Name or IG...">
+    </div>
+    <div class="smart-search">
+      <input type="text" class="smart-search__input" id="smartSearchInput" placeholder="AI search: &quot;moms&quot;, &quot;women over 60&quot;...">
+      <button class="smart-search__btn" id="smartSearchBtn">Search</button>
+    </div>
+    <div class="sort-group">
+      <label>Sort</label>
+      <select id="sortBy">
+        <option value="default">Submission Order</option>
+        <option value="score-desc">AI Score ↓</option>
+        <option value="score-asc">AI Score ↑</option>
+      </select>
     </div>
     <div class="filter-group">
       <label>Age</label>
@@ -1074,6 +1459,18 @@
       <select id="filterSkinTone"><option value="">All</option></select>
     </div>
     <div class="filter-group">
+      <label>Persona</label>
+      <select id="filterPersona">
+        <option value="">All</option>
+        <option value="ageless-matriarch">Ageless Matriarch</option>
+        <option value="high-powered-executive">High-Powered Executive</option>
+        <option value="wellness-practitioner">Wellness Practitioner</option>
+        <option value="busy-suburban-supermom">Busy Suburban Supermom</option>
+        <option value="creative-entrepreneur">Creative Entrepreneur</option>
+        <option value="dedicated-educator">Dedicated Educator</option>
+      </select>
+    </div>
+    <div class="filter-group">
       <label>Status</label>
       <div class="filter-pills" id="filterStatus">
         <button class="filter-pill active" data-status="all">All</button>
@@ -1081,6 +1478,7 @@
         <button class="filter-pill" data-status="yes">Yes</button>
         <button class="filter-pill" data-status="maybe">Maybe</button>
         <button class="filter-pill" data-status="no">No</button>
+        <button class="filter-pill" data-status="top100">Top 100</button>
       </div>
     </div>
   </div>
@@ -1105,6 +1503,25 @@
           <div class="candidate-name" id="candidateName">–</div>
           <div class="candidate-meta" id="candidateMeta">–</div>
           <div class="candidate-ig" id="candidateIg"></div>
+
+          <!-- AI Score -->
+          <div class="score-section" id="scoreSection" style="display:none">
+            <div class="score-header">
+              <span class="score-badge" id="scoreBadge"></span>
+              <span class="score-label">AI Score</span>
+            </div>
+            <div class="score-breakdown" id="scoreBreakdown"></div>
+            <div class="score-reasoning" id="scoreReasoning"></div>
+          </div>
+
+          <!-- Persona Chips -->
+          <div class="persona-chips" id="personaChips"></div>
+
+          <!-- Team Ratings -->
+          <div class="team-ratings" id="teamRatings" style="display:none">
+            <div class="team-ratings__header">Team Ratings</div>
+            <div id="teamVotes"></div>
+          </div>
 
           <div class="info-section">
             <div class="info-section__label">Skin Tone</div>
@@ -1158,14 +1575,28 @@
     <div class="header-actions">
       <button class="btn-icon" id="btnFilter2">Filter</button>
       <button class="btn-icon active" id="btnCardView">Cards</button>
+      <button class="btn-icon" id="btnAnalytics2">Analytics</button>
       <button class="btn-icon" id="btnExport2">Export</button>
     </div>
+  </div>
+
+  <div class="search-indicator" id="searchIndicator2">
+    <span id="searchIndicatorText2"></span>
+    <button class="search-indicator__clear" id="searchClear2">Clear</button>
   </div>
 
   <div class="filter-bar" id="filterBar2">
     <div class="filter-group">
       <label>Search</label>
       <input type="text" id="filterSearch2" placeholder="Name or IG...">
+    </div>
+    <div class="sort-group">
+      <label>Sort</label>
+      <select id="sortBy2">
+        <option value="default">Submission Order</option>
+        <option value="score-desc">AI Score ↓</option>
+        <option value="score-asc">AI Score ↑</option>
+      </select>
     </div>
     <div class="filter-group">
       <label>Status</label>
@@ -1175,12 +1606,41 @@
         <button class="filter-pill" data-status="yes">Yes</button>
         <button class="filter-pill" data-status="maybe">Maybe</button>
         <button class="filter-pill" data-status="no">No</button>
+        <button class="filter-pill" data-status="top100">Top 100</button>
       </div>
     </div>
   </div>
 
   <div class="gallery-body">
     <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</div>
+
+<!-- ============ ANALYTICS SCREEN ============ -->
+<div id="screen-analytics">
+  <div class="review-header">
+    <div class="review-header__title">Casting Review — Analytics</div>
+    <div class="review-header__progress">
+      <div class="progress-bar"><div class="progress-bar__fill" id="analyticsProgressFill"></div></div>
+      <div class="progress-stats" id="analyticsProgressStats"></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btnCardsFromAnalytics">Cards</button>
+      <button class="btn-icon" id="btnGalleryFromAnalytics">Grid</button>
+      <button class="btn-icon" id="btnExport3">Export</button>
+    </div>
+  </div>
+
+  <div class="analytics-body">
+    <!-- Summary -->
+    <div class="analytics-card analytics-card--full" style="margin-bottom: 24px">
+      <h3>Overall Summary</h3>
+      <div class="analytics-summary" id="analyticsSummary"></div>
+    </div>
+
+    <div class="analytics-grid" id="analyticsGrid">
+      <!-- Charts populated by JS -->
+    </div>
   </div>
 </div>
 
@@ -1219,6 +1679,7 @@
       <tr><td><kbd>]</kbd></td><td>Next unreviewed</td></tr>
       <tr><td><kbd>N</kbd></td><td>Focus notes</td></tr>
       <tr><td><kbd>G</kbd></td><td>Toggle gallery</td></tr>
+      <tr><td><kbd>A</kbd></td><td>Analytics</td></tr>
       <tr><td><kbd>F</kbd></td><td>Toggle filters</td></tr>
       <tr><td><kbd>E</kbd></td><td>Export</td></tr>
       <tr><td><kbd>?</kbd></td><td>This help</td></tr>
@@ -1234,66 +1695,86 @@ const App = {
   candidates: [],
   filtered: [],
   reviews: {},
+  scores: {},        // email -> { photoQuality, brandFit, composite, reasoning, personas }
+  teamRatings: {},   // email -> { reviewer: { rating, notes, reviewedAt } }
   currentIndex: 0,
   currentScreen: 'upload',
   reviewer: '',
   chunkStart: 0,
   chunkEnd: Infinity,
   autoAdvance: true,
+  sortBy: 'default',
+  searchResults: null, // null = no AI search active, array = matched emails
+  top100Emails: null,  // cached set of top 100 emails by score
   filters: {
     search: '',
     ageMin: 0,
     ageMax: 999,
     ethnicity: '',
     skinTone: '',
+    persona: '',
     status: 'all'
   },
   columnMap: {},
   galleryObserver: null,
+  syncInterval: null,
 };
 
 const STORAGE_KEY = 'jrb-casting-v1';
+
+// Persona display names
+const PERSONA_NAMES = {
+  'ageless-matriarch': 'Matriarch',
+  'high-powered-executive': 'Executive',
+  'wellness-practitioner': 'Wellness',
+  'busy-suburban-supermom': 'Supermom',
+  'creative-entrepreneur': 'Creative',
+  'dedicated-educator': 'Educator',
+};
+
+const PERSONA_FULL_NAMES = {
+  'ageless-matriarch': 'Ageless Matriarch',
+  'high-powered-executive': 'High-Powered Executive',
+  'wellness-practitioner': 'Wellness Practitioner',
+  'busy-suburban-supermom': 'Busy Suburban Supermom',
+  'creative-entrepreneur': 'Creative Entrepreneur',
+  'dedicated-educator': 'Dedicated Educator',
+};
+
+const PERSONA_TARGETS = {
+  'ageless-matriarch': 27.7,
+  'high-powered-executive': 20.3,
+  'wellness-practitioner': 11.8,
+  'busy-suburban-supermom': 9.0,
+  'creative-entrepreneur': 9.0,
+  'dedicated-educator': 8.7,
+};
 
 // ═══════════════════════════════════════════
 // CSV Parser
 // ═══════════════════════════════════════════
 function parseCSV(text) {
-  // Strip BOM
   if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-
   const rows = [];
   let current = '';
   let inQuotes = false;
   let row = [];
-
   for (let i = 0; i < text.length; i++) {
     const ch = text[i];
     const next = text[i + 1];
-
     if (inQuotes) {
-      if (ch === '"' && next === '"') {
-        current += '"';
-        i++;
-      } else if (ch === '"') {
-        inQuotes = false;
-      } else {
-        current += ch;
-      }
+      if (ch === '"' && next === '"') { current += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { current += ch; }
     } else {
-      if (ch === '"') {
-        inQuotes = true;
-      } else if (ch === ',') {
-        row.push(current);
-        current = '';
-      } else if (ch === '\n' || (ch === '\r' && next === '\n')) {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { row.push(current); current = ''; }
+      else if (ch === '\n' || (ch === '\r' && next === '\n')) {
         row.push(current);
         if (row.length > 1 || row[0].trim() !== '') rows.push(row);
-        row = [];
-        current = '';
+        row = []; current = '';
         if (ch === '\r') i++;
-      } else {
-        current += ch;
-      }
+      } else { current += ch; }
     }
   }
   if (current || row.length) {
@@ -1323,7 +1804,6 @@ const COLUMN_HINTS = {
 function autoMapColumns(headers) {
   const map = {};
   const lower = headers.map(h => h.toLowerCase());
-
   for (const [field, hints] of Object.entries(COLUMN_HINTS)) {
     for (const hint of hints) {
       const idx = lower.findIndex(h => h.includes(hint));
@@ -1339,7 +1819,6 @@ function autoMapColumns(headers) {
 function buildCandidates(rows, headers) {
   const map = autoMapColumns(headers);
   App.columnMap = map;
-
   return rows.map((row, i) => ({
     id: i,
     name: (row[map.name] || '').trim(),
@@ -1369,6 +1848,7 @@ function saveState() {
       autoAdvance: App.autoAdvance,
       lastIndex: App.currentIndex,
       filters: App.filters,
+      sortBy: App.sortBy,
     }
   };
   try {
@@ -1388,6 +1868,7 @@ function loadState() {
       App.reviewer = data.settings.reviewer || '';
       App.autoAdvance = data.settings.autoAdvance !== false;
       App.currentIndex = data.settings.lastIndex || 0;
+      if (data.settings.sortBy) App.sortBy = data.settings.sortBy;
     }
   } catch (e) {
     console.warn('Failed to load from localStorage:', e);
@@ -1395,30 +1876,210 @@ function loadState() {
 }
 
 // ═══════════════════════════════════════════
-// Filtering
+// Scores Loading
+// ═══════════════════════════════════════════
+async function loadScores() {
+  try {
+    const resp = await fetch('scores.json');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    App.scores = data.scores || {};
+
+    // Attach persona data to candidates
+    for (const c of App.candidates) {
+      const s = App.scores[c.email];
+      if (s?.personas) {
+        c.personas = s.personas;
+      }
+    }
+
+    // Compute top 100
+    computeTop100();
+
+    console.log(`Loaded ${Object.keys(App.scores).length} scores`);
+  } catch (e) {
+    console.log('No scores.json found or failed to load:', e.message);
+  }
+}
+
+function computeTop100() {
+  const scored = App.candidates
+    .filter(c => App.scores[c.email]?.composite != null)
+    .sort((a, b) => (App.scores[b.email].composite) - (App.scores[a.email].composite));
+  App.top100Emails = new Set(scored.slice(0, 100).map(c => c.email));
+}
+
+function getScoreClass(composite) {
+  if (composite >= 70) return 'high';
+  if (composite >= 40) return 'mid';
+  return 'low';
+}
+
+// ═══════════════════════════════════════════
+// Shared Ratings (Cloud Sync)
+// ═══════════════════════════════════════════
+async function fetchTeamRatings() {
+  try {
+    const resp = await fetch('/api/ratings');
+    if (!resp.ok) return;
+    App.teamRatings = await resp.json();
+  } catch (e) {
+    // Silently fail — shared ratings are optional (works locally without API)
+  }
+}
+
+async function postRating(email, rating, notes) {
+  try {
+    await fetch('/api/ratings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, reviewer: App.reviewer, rating, notes }),
+    });
+  } catch (e) {
+    // Silently fail — localStorage is primary
+  }
+}
+
+function startSyncInterval() {
+  if (App.syncInterval) clearInterval(App.syncInterval);
+  App.syncInterval = setInterval(async () => {
+    await fetchTeamRatings();
+    // Re-render if currently viewing a card
+    if (App.currentScreen === 'review') {
+      renderTeamRatings();
+    }
+  }, 30000); // Poll every 30s
+}
+
+// ═══════════════════════════════════════════
+// Smart Search
+// ═══════════════════════════════════════════
+async function smartSearch(query) {
+  if (!query.trim()) return;
+
+  const btn = document.getElementById('smartSearchBtn');
+  btn.disabled = true;
+  btn.textContent = 'Searching...';
+
+  try {
+    // Send compact candidate data for Claude to filter
+    const compactCandidates = App.candidates.map(c => ({
+      email: c.email,
+      name: c.name,
+      age: c.age,
+      ethnicity: c.ethnicity,
+      skinTone: c.skinTone,
+      skinNeeds: c.skinNeeds,
+      products: c.products,
+      personas: c.personas?.map(p => p.id) || [],
+    }));
+
+    const resp = await fetch('/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, candidates: compactCandidates }),
+    });
+
+    if (!resp.ok) throw new Error('Search failed');
+
+    const result = await resp.json();
+    App.searchResults = new Set(result.matches || []);
+
+    // Show indicator
+    const count = App.searchResults.size;
+    const text = `AI filtered: ${count} match${count !== 1 ? 'es' : ''} for "${query}"`;
+    document.getElementById('searchIndicatorText').textContent = text;
+    document.getElementById('searchIndicator').classList.add('visible');
+    document.getElementById('searchIndicatorText2').textContent = text;
+    document.getElementById('searchIndicator2').classList.add('visible');
+
+    applyFilters();
+    App.currentIndex = 0;
+
+    if (App.currentScreen === 'review') renderCard();
+    if (App.currentScreen === 'gallery') renderGallery();
+
+  } catch (e) {
+    console.error('Smart search error:', e);
+    alert('Search failed. Make sure the app is deployed with the search API.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Search';
+  }
+}
+
+function clearSmartSearch() {
+  App.searchResults = null;
+  document.getElementById('searchIndicator').classList.remove('visible');
+  document.getElementById('searchIndicator2').classList.remove('visible');
+  document.getElementById('smartSearchInput').value = '';
+  applyFilters();
+  App.currentIndex = 0;
+  if (App.currentScreen === 'review') renderCard();
+  if (App.currentScreen === 'gallery') renderGallery();
+}
+
+// ═══════════════════════════════════════════
+// Filtering + Sorting
 // ═══════════════════════════════════════════
 function applyFilters() {
-  const { search, ageMin, ageMax, ethnicity, skinTone, status } = App.filters;
+  const { search, ageMin, ageMax, ethnicity, skinTone, persona, status } = App.filters;
   const searchLower = search.toLowerCase();
 
   let pool = App.candidates.slice(App.chunkStart, App.chunkEnd);
 
   App.filtered = pool.filter(c => {
+    // Text search
     if (searchLower && !c.name.toLowerCase().includes(searchLower) &&
         !c.instagram.toLowerCase().includes(searchLower)) return false;
+
+    // AI search results
+    if (App.searchResults && !App.searchResults.has(c.email)) return false;
+
+    // Age
     if (ageMin && c.age < ageMin) return false;
     if (ageMax && c.age > ageMax) return false;
+
+    // Ethnicity
     if (ethnicity && !c.ethnicity.toLowerCase().includes(ethnicity.toLowerCase())) return false;
+
+    // Skin tone
     if (skinTone && !c.skinTone.toLowerCase().includes(skinTone.toLowerCase())) return false;
 
+    // Persona
+    if (persona) {
+      const score = App.scores[c.email];
+      const hasPersona = score?.personas?.some(p => p.id === persona && p.confidence >= 0.3);
+      if (!hasPersona) return false;
+    }
+
+    // Status
     const review = App.reviews[c.email];
     if (status === 'unreviewed' && review?.rating) return false;
     if (status === 'yes' && review?.rating !== 'yes') return false;
     if (status === 'maybe' && review?.rating !== 'maybe') return false;
     if (status === 'no' && review?.rating !== 'no') return false;
+    if (status === 'top100') {
+      if (!App.top100Emails || !App.top100Emails.has(c.email)) return false;
+    }
 
     return true;
   });
+
+  // Sort
+  if (App.sortBy === 'score-desc') {
+    App.filtered.sort((a, b) => {
+      const sa = App.scores[a.email]?.composite ?? -1;
+      const sb = App.scores[b.email]?.composite ?? -1;
+      return sb - sa;
+    });
+  } else if (App.sortBy === 'score-asc') {
+    App.filtered.sort((a, b) => {
+      const sa = App.scores[a.email]?.composite ?? -1;
+      const sb = App.scores[b.email]?.composite ?? -1;
+      return sa - sb;
+    });
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -1430,6 +2091,9 @@ function renderCard() {
     document.getElementById('candidateName').textContent = 'No candidates match filters';
     document.getElementById('candidateMeta').textContent = '';
     document.getElementById('candidateIg').innerHTML = '';
+    document.getElementById('scoreSection').style.display = 'none';
+    document.getElementById('personaChips').innerHTML = '';
+    document.getElementById('teamRatings').style.display = 'none';
     document.getElementById('candidateTone').textContent = '';
     document.getElementById('candidateNeeds').innerHTML = '';
     document.getElementById('candidateProducts').textContent = '';
@@ -1452,6 +2116,15 @@ function renderCard() {
   } else {
     igEl.innerHTML = '<span style="color:var(--text-muted);font-size:13px">No Instagram</span>';
   }
+
+  // AI Score
+  renderScore(c);
+
+  // Persona chips
+  renderPersonas(c);
+
+  // Team Ratings
+  renderTeamRatings();
 
   // Skin tone
   document.getElementById('candidateTone').innerHTML = `<span class="skin-tone-tag">${c.skinTone || '–'}</span>`;
@@ -1484,6 +2157,70 @@ function renderCard() {
   renderProgress();
 }
 
+function renderScore(c) {
+  const score = App.scores[c.email];
+  const section = document.getElementById('scoreSection');
+
+  if (!score || score.composite == null) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  const cls = getScoreClass(score.composite);
+
+  document.getElementById('scoreBadge').className = `score-badge score-badge--${cls}`;
+  document.getElementById('scoreBadge').textContent = `${score.composite}/100`;
+  document.getElementById('scoreBreakdown').textContent = `Photo: ${score.photoQuality}/50 · Fit: ${score.brandFit}/50`;
+  document.getElementById('scoreReasoning').textContent = score.reasoning || '';
+}
+
+function renderPersonas(c) {
+  const container = document.getElementById('personaChips');
+  const score = App.scores[c.email];
+
+  if (!score?.personas?.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = score.personas
+    .filter(p => p.confidence >= 0.3)
+    .map(p => `<span class="persona-chip persona-chip--${p.id}">${PERSONA_NAMES[p.id] || p.id} <span style="opacity:.6">${Math.round(p.confidence * 100)}%</span></span>`)
+    .join('');
+}
+
+function renderTeamRatings() {
+  const c = App.filtered[App.currentIndex];
+  if (!c) return;
+
+  const container = document.getElementById('teamRatings');
+  const votesEl = document.getElementById('teamVotes');
+  const teamData = App.teamRatings[c.email];
+
+  if (!teamData || Object.keys(teamData).length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+
+  // Filter out current reviewer's own rating
+  const otherVotes = Object.entries(teamData).filter(([name]) => name !== App.reviewer);
+  if (otherVotes.length === 0) {
+    container.style.display = 'none';
+    return;
+  }
+
+  container.style.display = 'block';
+  votesEl.innerHTML = otherVotes.map(([name, data]) => {
+    const ratingClass = data.rating ? `team-vote__rating--${data.rating}` : '';
+    return `<div class="team-vote">
+      <span class="team-vote__name">${name}</span>
+      ${data.rating ? `<span class="team-vote__rating ${ratingClass}">${data.rating}</span>` : ''}
+      ${data.notes ? `<span class="team-vote__notes">${data.notes}</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
 function renderPhoto(url) {
   const container = document.getElementById('cardPhoto');
   if (!url) {
@@ -1494,7 +2231,6 @@ function renderPhoto(url) {
   img.onload = () => { container.replaceChildren(img); };
   img.onerror = () => { container.innerHTML = '<span class="card-photo__placeholder">Photo unavailable</span>'; };
   img.src = url;
-  // Show loading state
   container.innerHTML = '<span class="card-photo__placeholder">Loading...</span>';
 }
 
@@ -1515,7 +2251,6 @@ function renderVideo(url) {
     video.playsInline = true;
     video.src = url;
     video.onerror = () => {
-      // Fallback to image
       const img = new Image();
       img.src = url;
       img.onerror = () => {
@@ -1525,7 +2260,6 @@ function renderVideo(url) {
     };
     container.replaceChildren(video);
   } else {
-    // Likely an image submitted as video
     const img = new Image();
     img.src = url;
     img.style.maxHeight = '100%';
@@ -1542,14 +2276,11 @@ function renderVideo(url) {
 function cleanInstagram(raw) {
   if (!raw) return '';
   let handle = raw.trim();
-  // Handle full URLs
   if (handle.includes('instagram.com')) {
     const match = handle.match(/instagram\.com\/([A-Za-z0-9_.]+)/);
     if (match) return match[1];
   }
-  // Strip @ prefix
   handle = handle.replace(/^@/, '');
-  // Skip if it's "none" or similar
   if (['none', 'n/a', 'na', 'no'].includes(handle.toLowerCase())) return '';
   return handle;
 }
@@ -1582,16 +2313,25 @@ function renderProgress() {
 
   const pct = total ? (reviewed / total * 100) : 0;
   const pos = total ? `${App.currentIndex + 1} of ${total}` : '0 of 0';
+  const statsHTML = `${reviewed} reviewed · <span class="stat-yes">${yes} Y</span> · <span class="stat-maybe">${maybe} M</span> · <span class="stat-no">${no} N</span>`;
 
   // Review screen
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressStats').innerHTML =
-    `${pos} · ${reviewed} reviewed · <span class="stat-yes">${yes} Y</span> · <span class="stat-maybe">${maybe} M</span> · <span class="stat-no">${no} N</span>`;
+  const progressFill = document.getElementById('progressFill');
+  if (progressFill) progressFill.style.width = pct + '%';
+  const progressStats = document.getElementById('progressStats');
+  if (progressStats) progressStats.innerHTML = `${pos} · ${statsHTML}`;
 
   // Gallery screen
-  document.getElementById('galleryProgressFill').style.width = pct + '%';
-  document.getElementById('galleryProgressStats').innerHTML =
-    `${reviewed} / ${total} reviewed · <span class="stat-yes">${yes} Y</span> · <span class="stat-maybe">${maybe} M</span> · <span class="stat-no">${no} N</span>`;
+  const gFill = document.getElementById('galleryProgressFill');
+  if (gFill) gFill.style.width = pct + '%';
+  const gStats = document.getElementById('galleryProgressStats');
+  if (gStats) gStats.innerHTML = `${total} total · ${statsHTML}`;
+
+  // Analytics screen
+  const aFill = document.getElementById('analyticsProgressFill');
+  if (aFill) aFill.style.width = pct + '%';
+  const aStats = document.getElementById('analyticsProgressStats');
+  if (aStats) aStats.innerHTML = statsHTML;
 }
 
 // ═══════════════════════════════════════════
@@ -1603,7 +2343,6 @@ function rate(rating) {
 
   const existing = App.reviews[c.email];
   if (existing && existing.rating === rating) {
-    // Toggle off
     existing.rating = null;
   } else {
     App.reviews[c.email] = {
@@ -1617,6 +2356,10 @@ function rate(rating) {
   saveState();
   renderCard();
 
+  // Sync to cloud
+  const r = App.reviews[c.email];
+  postRating(c.email, r?.rating, r?.notes);
+
   if (App.autoAdvance && App.reviews[c.email]?.rating) {
     setTimeout(() => navigateToNext(), 250);
   }
@@ -1629,6 +2372,7 @@ function clearRating() {
   if (existing) existing.rating = null;
   saveState();
   renderCard();
+  postRating(c.email, null, existing?.notes || '');
 }
 
 function navigate(dir) {
@@ -1642,7 +2386,6 @@ function navigate(dir) {
 }
 
 function navigateToNext() {
-  // Go to next unreviewed, or just next
   for (let i = App.currentIndex + 1; i < App.filtered.length; i++) {
     const r = App.reviews[App.filtered[i].email];
     if (!r?.rating) {
@@ -1653,7 +2396,6 @@ function navigateToNext() {
       return;
     }
   }
-  // If none found ahead, just go next
   if (App.currentIndex + 1 < App.filtered.length) {
     navigate(1);
   }
@@ -1670,7 +2412,6 @@ function navigateToNextUnreviewed() {
       return;
     }
   }
-  // Wrap around
   for (let i = 0; i < App.currentIndex; i++) {
     const r = App.reviews[App.filtered[i].email];
     if (!r?.rating) {
@@ -1725,6 +2466,7 @@ function renderGallery() {
   for (let i = 0; i < App.filtered.length; i++) {
     const c = App.filtered[i];
     const review = App.reviews[c.email];
+    const score = App.scores[c.email];
     const cell = document.createElement('div');
     cell.className = 'gallery-cell';
     cell.dataset.index = i;
@@ -1734,15 +2476,46 @@ function renderGallery() {
       badgeHTML = `<span class="gallery-cell__badge gallery-cell__badge--${review.rating}">${review.rating}</span>`;
     }
 
+    let scoreHTML = '';
+    if (score?.composite != null) {
+      const cls = getScoreClass(score.composite);
+      scoreHTML = `<span class="gallery-cell__score gallery-cell__score--${cls}">${score.composite}</span>`;
+    }
+
+    // Team vote count
+    let teamHTML = '';
+    const teamData = App.teamRatings[c.email];
+    if (teamData) {
+      const otherCount = Object.keys(teamData).filter(n => n !== App.reviewer).length;
+      if (otherCount > 0) {
+        teamHTML = `<span class="gallery-cell__team-count">${otherCount} vote${otherCount > 1 ? 's' : ''}</span>`;
+      }
+    }
+
+    // Persona chips for gallery
+    let personaHTML = '';
+    if (score?.personas?.length) {
+      personaHTML = '<div class="gallery-cell__personas">' +
+        score.personas.filter(p => p.confidence >= 0.3)
+          .map(p => `<span class="persona-chip persona-chip--${p.id}">${PERSONA_NAMES[p.id] || p.id}</span>`)
+          .join('') +
+        '</div>';
+    }
+
     cell.innerHTML = `
       <div class="gallery-cell__photo" data-src="${c.photoUrl || ''}">
         <span style="color:var(--text-muted);font-size:12px">Loading...</span>
       </div>
       <div class="gallery-cell__info">
-        <span class="gallery-cell__name">${c.name}</span>
-        <span class="gallery-cell__age">${c.age}</span>
+        <div class="gallery-cell__top-row">
+          <span class="gallery-cell__name">${c.name}</span>
+          <span class="gallery-cell__age">${c.age}</span>
+        </div>
+        ${personaHTML}
       </div>
+      ${scoreHTML}
       ${badgeHTML}
+      ${teamHTML}
       <div class="gallery-cell__actions">
         <button class="g-yes" data-rate="yes">Yes</button>
         <button class="g-maybe" data-rate="maybe">Maybe</button>
@@ -1750,7 +2523,6 @@ function renderGallery() {
       </div>
     `;
 
-    // Click cell to go to card view
     cell.addEventListener('click', (e) => {
       if (e.target.dataset.rate) {
         e.stopPropagation();
@@ -1763,6 +2535,7 @@ function renderGallery() {
           reviewer: App.reviewer,
         };
         saveState();
+        postRating(candidate.email, e.target.dataset.rate, App.reviews[candidate.email]?.notes || '');
         renderGallery();
         return;
       }
@@ -1772,7 +2545,6 @@ function renderGallery() {
 
     grid.appendChild(cell);
 
-    // Observe photo for lazy loading
     const photoEl = cell.querySelector('.gallery-cell__photo');
     if (photoEl.dataset.src) {
       App.galleryObserver.observe(photoEl);
@@ -1783,10 +2555,183 @@ function renderGallery() {
 }
 
 // ═══════════════════════════════════════════
+// Analytics
+// ═══════════════════════════════════════════
+function renderAnalytics() {
+  // Get all reviewed candidates (Yes + Maybe picks)
+  const allCandidates = App.candidates.slice(App.chunkStart, App.chunkEnd);
+  let totalYes = 0, totalMaybe = 0, totalNo = 0, totalUnreviewed = 0;
+  let avgScore = 0, scoreCount = 0;
+
+  const picks = []; // yes + maybe
+  const yesList = [];
+  const maybeList = [];
+
+  for (const c of allCandidates) {
+    const r = App.reviews[c.email];
+    if (!r?.rating) { totalUnreviewed++; continue; }
+    if (r.rating === 'yes') { totalYes++; yesList.push(c); picks.push(c); }
+    else if (r.rating === 'maybe') { totalMaybe++; maybeList.push(c); picks.push(c); }
+    else if (r.rating === 'no') { totalNo++; }
+
+    const s = App.scores[c.email];
+    if (s?.composite != null) { avgScore += s.composite; scoreCount++; }
+  }
+
+  if (scoreCount) avgScore = Math.round(avgScore / scoreCount);
+
+  // Summary
+  const summaryEl = document.getElementById('analyticsSummary');
+  summaryEl.innerHTML = `
+    <div class="analytics-stat">
+      <div class="analytics-stat__value" style="color:var(--green)">${totalYes}</div>
+      <div class="analytics-stat__label">Yes</div>
+    </div>
+    <div class="analytics-stat">
+      <div class="analytics-stat__value" style="color:var(--amber)">${totalMaybe}</div>
+      <div class="analytics-stat__label">Maybe</div>
+    </div>
+    <div class="analytics-stat">
+      <div class="analytics-stat__value" style="color:var(--red)">${totalNo}</div>
+      <div class="analytics-stat__label">No</div>
+    </div>
+    <div class="analytics-stat">
+      <div class="analytics-stat__value">${totalUnreviewed}</div>
+      <div class="analytics-stat__label">Unreviewed</div>
+    </div>
+    <div class="analytics-stat">
+      <div class="analytics-stat__value">${allCandidates.length}</div>
+      <div class="analytics-stat__label">Total</div>
+    </div>
+    <div class="analytics-stat">
+      <div class="analytics-stat__value">${scoreCount ? avgScore : '–'}</div>
+      <div class="analytics-stat__label">Avg AI Score (Rated)</div>
+    </div>
+  `;
+
+  const gridEl = document.getElementById('analyticsGrid');
+  gridEl.innerHTML = '';
+
+  // === By Persona ===
+  gridEl.innerHTML += buildBarChart('By Persona', buildPersonaData(yesList, maybeList), true);
+
+  // === By Age Range ===
+  gridEl.innerHTML += buildBarChart('By Age Range', buildAgeData(yesList, maybeList));
+
+  // === By Ethnicity ===
+  gridEl.innerHTML += buildBarChart('By Ethnicity', buildEthnicityData(yesList, maybeList));
+
+  // === By Skin Tone ===
+  gridEl.innerHTML += buildBarChart('By Skin Tone', buildSkinToneData(yesList, maybeList));
+
+  renderProgress();
+}
+
+function buildPersonaData(yesList, maybeList) {
+  const personaIds = Object.keys(PERSONA_FULL_NAMES);
+  return personaIds.map(id => {
+    const yesCount = yesList.filter(c => {
+      const s = App.scores[c.email];
+      return s?.personas?.some(p => p.id === id && p.confidence >= 0.3);
+    }).length;
+    const maybeCount = maybeList.filter(c => {
+      const s = App.scores[c.email];
+      return s?.personas?.some(p => p.id === id && p.confidence >= 0.3);
+    }).length;
+    return {
+      label: PERSONA_FULL_NAMES[id],
+      yes: yesCount,
+      maybe: maybeCount,
+      target: PERSONA_TARGETS[id],
+    };
+  });
+}
+
+function buildAgeData(yesList, maybeList) {
+  const ranges = ['18–29', '30–39', '40–49', '50–59', '60+'];
+  const rangeFilter = (c, min, max) => c.age >= min && c.age <= max;
+
+  return ranges.map(r => {
+    let min, max;
+    if (r === '18–29') { min = 18; max = 29; }
+    else if (r === '30–39') { min = 30; max = 39; }
+    else if (r === '40–49') { min = 40; max = 49; }
+    else if (r === '50–59') { min = 50; max = 59; }
+    else { min = 60; max = 999; }
+    return {
+      label: r,
+      yes: yesList.filter(c => rangeFilter(c, min, max)).length,
+      maybe: maybeList.filter(c => rangeFilter(c, min, max)).length,
+    };
+  });
+}
+
+function buildEthnicityData(yesList, maybeList) {
+  const ethnicities = [...new Set(App.candidates.map(c => c.ethnicity).filter(Boolean))].sort();
+  return ethnicities.map(e => ({
+    label: e,
+    yes: yesList.filter(c => c.ethnicity === e).length,
+    maybe: maybeList.filter(c => c.ethnicity === e).length,
+  }));
+}
+
+function buildSkinToneData(yesList, maybeList) {
+  const tones = [...new Set(App.candidates.map(c => c.skinTone).filter(Boolean))].sort();
+  return tones.map(t => ({
+    label: t,
+    yes: yesList.filter(c => c.skinTone === t).length,
+    maybe: maybeList.filter(c => c.skinTone === t).length,
+  }));
+}
+
+function buildBarChart(title, data, showTargets = false) {
+  const maxTotal = Math.max(...data.map(d => d.yes + d.maybe), 1);
+
+  let diversityAlerts = [];
+  const totalPicks = data.reduce((sum, d) => sum + d.yes + d.maybe, 0);
+
+  const bars = data.map(d => {
+    const total = d.yes + d.maybe;
+    const yesW = (d.yes / maxTotal * 100).toFixed(1);
+    const maybeW = (d.maybe / maxTotal * 100).toFixed(1);
+
+    let targetHTML = '';
+    if (showTargets && d.target) {
+      const actual = totalPicks ? (total / totalPicks * 100).toFixed(1) : 0;
+      targetHTML = `<span class="bar-row__target">${actual}% / ${d.target}%</span>`;
+      if (total === 0 && totalPicks > 5) {
+        diversityAlerts.push(d.label);
+      }
+    }
+
+    return `<div class="bar-row">
+      <span class="bar-row__label" title="${d.label}">${d.label}</span>
+      <div class="bar-row__bars">
+        ${d.yes ? `<div class="bar-row__bar bar-row__bar--yes" style="width:${yesW}%">${d.yes > 0 ? d.yes : ''}</div>` : ''}
+        ${d.maybe ? `<div class="bar-row__bar bar-row__bar--maybe" style="width:${maybeW}%">${d.maybe > 0 ? d.maybe : ''}</div>` : ''}
+      </div>
+      <span class="bar-row__count">${d.yes}Y ${d.maybe}M</span>
+      ${targetHTML}
+    </div>`;
+  }).join('');
+
+  let alertHTML = '';
+  if (diversityAlerts.length) {
+    alertHTML = `<div class="diversity-alert">⚠ Gap: No picks yet for ${diversityAlerts.join(', ')}</div>`;
+  }
+
+  return `<div class="analytics-card">
+    <h3>${title}</h3>
+    <div class="bar-chart">${bars}</div>
+    ${alertHTML}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════
 // Export
 // ═══════════════════════════════════════════
 function exportCSV(filterType) {
-  const headers = ['Name', 'Email', 'Instagram', 'Age', 'Ethnicity', 'Skin Tone', 'Skin Needs', 'Products', 'Rating', 'Notes', 'Reviewer', 'Reviewed At', 'Photo URL', 'Video URL'];
+  const headers = ['Name', 'Email', 'Instagram', 'Age', 'Ethnicity', 'Skin Tone', 'Skin Needs', 'Products', 'Rating', 'Notes', 'Reviewer', 'Reviewed At', 'AI Score', 'Photo Quality', 'Brand Fit', 'AI Reasoning', 'Personas', 'Photo URL', 'Video URL'];
   const rows = [headers];
 
   for (const c of App.candidates) {
@@ -1799,10 +2744,16 @@ function exportCSV(filterType) {
     if (filterType === 'yes+maybe' && rating !== 'yes' && rating !== 'maybe') continue;
     if (filterType === 'no' && rating !== 'no') continue;
 
+    const s = App.scores[c.email] || {};
+    const personas = (s.personas || []).filter(p => p.confidence >= 0.3).map(p => `${PERSONA_NAMES[p.id] || p.id} (${Math.round(p.confidence * 100)}%)`).join('; ');
+
     rows.push([
       c.name, c.email, c.instagram, c.age, c.ethnicity, c.skinTone,
       c.skinNeeds.join('; '), c.products, rating, r?.notes || '',
-      r?.reviewer || '', r?.reviewedAt || '', c.photoUrl, c.videoUrl
+      r?.reviewer || '', r?.reviewedAt || '',
+      s.composite ?? '', s.photoQuality ?? '', s.brandFit ?? '',
+      s.reasoning || '', personas,
+      c.photoUrl, c.videoUrl
     ]);
   }
 
@@ -1834,6 +2785,7 @@ function showScreen(screen) {
   document.getElementById('screen-upload').style.display = screen === 'upload' ? 'flex' : 'none';
   document.getElementById('screen-review').style.display = screen === 'review' ? 'flex' : 'none';
   document.getElementById('screen-gallery').style.display = screen === 'gallery' ? 'flex' : 'none';
+  document.getElementById('screen-analytics').style.display = screen === 'analytics' ? 'flex' : 'none';
 
   if (screen === 'review') {
     applyFilters();
@@ -1842,6 +2794,8 @@ function showScreen(screen) {
   } else if (screen === 'gallery') {
     applyFilters();
     renderGallery();
+  } else if (screen === 'analytics') {
+    renderAnalytics();
   }
 }
 
@@ -1923,11 +2877,20 @@ function init() {
   document.getElementById('btnGallery').addEventListener('click', () => showScreen('gallery'));
   document.getElementById('btnCardView').addEventListener('click', () => showScreen('review'));
 
+  // Analytics
+  document.getElementById('btnAnalytics').addEventListener('click', () => showScreen('analytics'));
+  document.getElementById('btnAnalytics2').addEventListener('click', () => showScreen('analytics'));
+  document.getElementById('btnCardsFromAnalytics').addEventListener('click', () => showScreen('review'));
+  document.getElementById('btnGalleryFromAnalytics').addEventListener('click', () => showScreen('gallery'));
+
   // Export
   document.getElementById('btnExport').addEventListener('click', () => {
     document.getElementById('exportModal').classList.add('visible');
   });
   document.getElementById('btnExport2').addEventListener('click', () => {
+    document.getElementById('exportModal').classList.add('visible');
+  });
+  document.getElementById('btnExport3').addEventListener('click', () => {
     document.getElementById('exportModal').classList.add('visible');
   });
   document.getElementById('exportCancel').addEventListener('click', () => {
@@ -1954,6 +2917,36 @@ function init() {
     }
   });
 
+  // Sort controls
+  document.getElementById('sortBy').addEventListener('change', (e) => {
+    App.sortBy = e.target.value;
+    document.getElementById('sortBy2').value = e.target.value;
+    applyFilters();
+    App.currentIndex = 0;
+    renderCard();
+    saveState();
+  });
+  document.getElementById('sortBy2').addEventListener('change', (e) => {
+    App.sortBy = e.target.value;
+    document.getElementById('sortBy').value = e.target.value;
+    applyFilters();
+    renderGallery();
+    saveState();
+  });
+
+  // Smart search
+  document.getElementById('smartSearchBtn').addEventListener('click', () => {
+    smartSearch(document.getElementById('smartSearchInput').value);
+  });
+  document.getElementById('smartSearchInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      smartSearch(document.getElementById('smartSearchInput').value);
+    }
+  });
+  document.getElementById('searchClear').addEventListener('click', clearSmartSearch);
+  document.getElementById('searchClear2').addEventListener('click', clearSmartSearch);
+
   // Filter controls
   const filterHandler = () => {
     App.filters.search = document.getElementById('filterSearch').value;
@@ -1961,12 +2954,13 @@ function init() {
     App.filters.ageMax = parseInt(document.getElementById('filterAgeMax').value) || 999;
     App.filters.ethnicity = document.getElementById('filterEthnicity').value;
     App.filters.skinTone = document.getElementById('filterSkinTone').value;
+    App.filters.persona = document.getElementById('filterPersona').value;
     applyFilters();
     App.currentIndex = 0;
     renderCard();
   };
 
-  ['filterSearch', 'filterAgeMin', 'filterAgeMax', 'filterEthnicity', 'filterSkinTone'].forEach(id => {
+  ['filterSearch', 'filterAgeMin', 'filterAgeMax', 'filterEthnicity', 'filterSkinTone', 'filterPersona'].forEach(id => {
     document.getElementById(id).addEventListener('input', debounce(filterHandler, 200));
     document.getElementById(id).addEventListener('change', filterHandler);
   });
@@ -2036,6 +3030,12 @@ async function loadCandidateData() {
     }
 
     populateFilters();
+
+    // Load scores after candidates
+    await loadScores();
+
+    // Fetch team ratings
+    fetchTeamRatings();
   } catch (err) {
     document.getElementById('setupSummary').innerHTML = 'Error loading candidate data: ' + err.message;
   }
@@ -2064,15 +3064,16 @@ function startReview() {
 
   applyFilters();
 
-  // Try to restore last position
   if (App.currentIndex >= App.filtered.length) App.currentIndex = 0;
 
   saveState();
   showScreen('review');
+
+  // Start polling for team ratings
+  startSyncInterval();
 }
 
 function handleKeyboard(e) {
-  // Don't intercept when typing in inputs
   const tag = document.activeElement.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
     if (e.key === 'Escape') document.activeElement.blur();
@@ -2104,6 +3105,8 @@ function handleKeyboard(e) {
       case 'N': e.preventDefault(); document.getElementById('candidateNotes').focus(); break;
       case 'g':
       case 'G': showScreen('gallery'); break;
+      case 'a':
+      case 'A': showScreen('analytics'); break;
       case 'f':
       case 'F': document.getElementById('filterBar').classList.toggle('visible'); break;
       case 'e':
@@ -2114,6 +3117,8 @@ function handleKeyboard(e) {
     switch (e.key) {
       case 'g':
       case 'G': showScreen('review'); break;
+      case 'a':
+      case 'A': showScreen('analytics'); break;
       case 'f':
       case 'F': document.getElementById('filterBar2').classList.toggle('visible'); break;
       case 'e':
