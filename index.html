@@ -843,10 +843,16 @@
 
     /* ── Touch device improvements ── */
     @media (pointer: coarse) {
+      /* Remove double-tap delay on all interactive elements */
+      button, a, .filter-pill, .chunk-btn, .toggle, .nav-arrow, .action-btn,
+      .gallery-cell__actions, .gallery-cell__star, .detail-header__bookmark,
+      .btn-icon, .btn-start, select, input { touch-action: manipulation; }
+
       .btn-icon { min-height: 44px; padding: 10px 14px; }
       .filter-pill { min-height: 36px; padding: 8px 12px; }
       .nav-arrow { width: 48px; height: 48px; }
-      .gallery-cell__actions button { min-height: 40px; padding: 8px 0; }
+      .gallery-cell__actions { gap: 0; } /* Remove dead zone between Y/M/N buttons */
+      .gallery-cell__actions button { min-height: 44px; padding: 8px 0; }
       .gallery-cell__star { width: 36px; height: 36px; font-size: 18px; display: flex; align-items: center; justify-content: center; }
       .chunk-btn { min-height: 44px; padding: 12px 16px; }
       .toggle { width: 44px; height: 24px; }
@@ -859,21 +865,38 @@
       .search-indicator__clear { padding: 6px 8px; min-height: 36px; }
       .form-input { min-height: 44px; padding: 12px 14px; }
       .btn-start { min-height: 52px; }
+
+      /* Card view: sticky action buttons so they're always reachable */
+      .detail-actions {
+        position: sticky;
+        bottom: 0;
+        background: var(--bg-card);
+        z-index: 2;
+      }
     }
 
-    /* ── Responsive: Mobile ── */
+    /* ── Responsive: Mobile & iPad ── */
     @media (max-width: 768px) {
       .app-header { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
       .progress-bar { max-width: none; }
       .review-panel { flex-direction: column; }
       .nav-arrow { width: 44px; height: 44px; font-size: 18px; }
-      .review-panel__detail { width: 100%; border-left: none; border-top: 1px solid var(--border); }
+      .review-panel__media { flex: 0 0 auto; max-height: 35vh; }
+      .review-panel__detail { width: 100%; border-left: none; border-top: 1px solid var(--border); flex: 1; min-height: 0; }
       .review-body { flex-direction: column; }
       .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
       .smart-search { max-width: none; }
       .analytics-grid { grid-template-columns: 1fr; }
       .bar-row__label { min-width: 100px; font-size: 11px; }
       .header-actions .btn-icon span.desktop-only { display: none; }
+      /* Sticky action buttons so they're always visible without scrolling */
+      .detail-actions {
+        position: sticky;
+        bottom: 0;
+        background: var(--bg-card);
+        z-index: 2;
+      }
+      .gallery-cell__actions { gap: 0; }
     }
   </style>
 </head>
@@ -2065,26 +2088,28 @@ function renderGallery() {
     `;
 
     cell.addEventListener('click', (e) => {
-      // Bookmark star
-      if (e.target.dataset.bookmark) {
+      // Bookmark star — use closest() for reliable touch targeting
+      const bookmarkEl = e.target.closest('[data-bookmark]');
+      if (bookmarkEl) {
         e.stopPropagation();
-        toggleBookmark(e.target.dataset.bookmark);
-        e.target.classList.toggle('bookmarked');
-        e.target.textContent = e.target.classList.contains('bookmarked') ? '★' : '☆';
+        toggleBookmark(bookmarkEl.dataset.bookmark);
+        bookmarkEl.classList.toggle('bookmarked');
+        bookmarkEl.textContent = bookmarkEl.classList.contains('bookmarked') ? '★' : '☆';
         return;
       }
-      // Batch rate
-      if (e.target.dataset.rate) {
+      // Batch rate — use closest() so taps near button edges still register
+      const rateBtn = e.target.closest('[data-rate]');
+      if (rateBtn) {
         e.stopPropagation();
         const idx = parseInt(cell.dataset.index);
         const candidate = App.filtered[idx];
         const existingReview = App.reviews[candidate.email];
         // Toggle off if same rating
-        if (existingReview?.rating === e.target.dataset.rate) {
+        if (existingReview?.rating === rateBtn.dataset.rate) {
           existingReview.rating = null;
         } else {
           App.reviews[candidate.email] = {
-            rating: e.target.dataset.rate,
+            rating: rateBtn.dataset.rate,
             notes: existingReview?.notes || '',
             reviewedAt: new Date().toISOString(),
             reviewer: App.reviewer,
@@ -2115,6 +2140,8 @@ function renderGallery() {
         renderFilterCounts();
         return;
       }
+      // Don't open card view when tapping the actions bar area (dead zone between buttons)
+      if (e.target.closest('.gallery-cell__actions')) return;
       // Open card view
       App.currentIndex = parseInt(cell.dataset.index);
       showScreen('review');
