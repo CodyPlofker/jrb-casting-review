@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "casting-review",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "/Users/codyplofker/Desktop/01-Projects/jrb-casting-review", "-p", "8903", "-c-1"],
+      "port": 8903
+    }
+  ]
+}
